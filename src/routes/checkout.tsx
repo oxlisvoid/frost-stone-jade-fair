@@ -1,84 +1,85 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
-import { useCurrentUserState } from "@/lib/auth/use-current-user";
-import { saveLead } from "@/lib/admin.server";
 import { useAccess } from "@/lib/access";
-import { OFFER, PAYMENT, SITE } from "@/lib/site";
+import { createCheckoutSession } from "@/lib/checkout-fn";
+import { PRODUCTS } from "@/lib/products";
+import { INCLUDED, OFFER, SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/checkout")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    paid: search.paid === "1" || search.paid === true ? "1" : undefined,
-  }),
   component: CheckoutPage,
 });
 
-function readStoredLink() {
-  try {
-    return localStorage.getItem("oxlis-stripe-link") ?? "";
-  } catch {
-    return "";
-  }
-}
-
 function CheckoutPage() {
-  const { paid } = useSearch({ from: "/checkout" });
-  const unlock = useAccess((s) => s.unlock);
   const unlocked = useAccess((s) => s.unlocked);
   const hydrate = useAccess((s) => s.hydrate);
-  const { user } = useCurrentUserState();
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [accepted, setAccepted] = useState(false);
-  const [stripeUrl, setStripeUrl] = useState(PAYMENT.stripePaymentLink);
+  const [qty, setQty] = useState(1);
+  const [addon, setAddon] = useState(false);
+  const [addonQty, setAddonQty] = useState(1);
+
+  const allAccess = PRODUCTS[0];
+  const instagram = PRODUCTS[1];
 
   useEffect(() => {
     hydrate();
-    if (!PAYMENT.stripePaymentLink) setStripeUrl(readStoredLink());
   }, [hydrate]);
 
-  useEffect(() => {
-    if (paid === "1") unlock();
-  }, [paid, unlock]);
+  const items = useMemo(() => {
+    const next = [{ productId: allAccess.id, quantity: qty }];
+    if (addon) next.push({ productId: instagram.id, quantity: addonQty });
+    return next;
+  }, [addon, addonQty, allAccess.id, instagram.id, qty]);
 
   const pay = async (event: FormEvent) => {
     event.preventDefault();
-    if (!accepted || !stripeUrl) return;
+    setError("");
+    if (!accepted) {
+      setError("Accept the terms to continue.");
+      return;
+    }
+    if (!name.trim() || !email.trim()) {
+      setError("Name and email are required.");
+      return;
+    }
     setBusy(true);
-    const order = {
-      name,
-      email,
-      offer: OFFER.name,
-      total: SITE.price,
-      acceptedTermsAt: new Date().toISOString(),
-    };
     try {
-      localStorage.setItem("oxlisvoid-last-order", JSON.stringify(order));
-    } catch {
-      /* ignore */
-    }
-    if (user) {
+      const session = await createCheckoutSession({
+        data: {
+          items,
+          email: email.trim(),
+          name: name.trim(),
+          origin: window.location.origin,
+        },
+      });
       try {
-        await saveLead({ data: { name, email } });
+        localStorage.setItem(
+          "oxlisvoid-last-order",
+          JSON.stringify({ name, email, items, at: new Date().toISOString() }),
+        );
       } catch {
-        /* operator log is best-effort */
+        /* ignore */
       }
+      if (!session.url) throw new Error("Stripe did not return a checkout URL");
+      window.location.assign(session.url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not start Stripe Checkout.");
+      setBusy(false);
     }
-    window.location.href = stripeUrl;
   };
 
-  if (paid === "1" || unlocked) {
+  if (unlocked) {
     return (
       <SiteShell>
         <main className="mx-auto max-w-lg px-4 py-20 text-center">
           <p className="text-sm font-medium text-good">Access on this device</p>
           <h1 className="mt-2 text-4xl">You're in.</h1>
-          <p className="mt-3 text-muted">
-            Stripe receipt hits your email. Course and toolkit open here. Final files also go
-            to the checkout address — keep that inbox.
-          </p>
+          <p className="mt-3 text-muted">Course and toolkit are open on this browser.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button asChild>
               <Link to="/toolkit">Open toolkit</Link>
@@ -96,21 +97,22 @@ function CheckoutPage() {
     <SiteShell>
       <main className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.9fr]">
         <div>
-          <p className="text-sm font-medium text-accent">All Access · one payment</p>
+          <p className="text-sm font-medium text-accent">All Access · Stripe Checkout</p>
           <h1 className="mt-2 text-4xl tracking-tight">{OFFER.headline}</h1>
           <p className="mt-3 text-muted">
-            {OFFER.sells} Card is charged on Stripe. This site never sees the number.
+            {OFFER.sells} Card fields live on Stripe. This site never sees the number.
           </p>
           <ul className="mt-6 space-y-2 text-sm text-muted">
-            <li>Was ${SITE.comparePrice} as Total Kit.</li>
-            <li>Standing price — no countdown.</li>
-            <li>After unlock or download, the sale is final.</li>
+            {INCLUDED.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </div>
 
         <form onSubmit={pay} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <p className="text-sm text-muted">{OFFER.name}</p>
           <p className="font-display text-4xl">{OFFER.priceLabel}</p>
+
           <label className="block text-sm">
             <span className="mb-1.5 block text-muted">Name</span>
             <input
@@ -132,6 +134,44 @@ function CheckoutPage() {
               autoComplete="email"
             />
           </label>
+
+          <label className="flex items-center justify-between gap-3 text-sm">
+            <span className="text-muted">Quantity · {allAccess.name}</span>
+            <input
+              type="number"
+              min={1}
+              max={allAccess.maxQuantity}
+              value={qty}
+              onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
+              className="h-11 w-20 rounded-lg bg-paper px-3 text-center shadow-(--shadow-card)"
+            />
+          </label>
+
+          <label className="flex items-start gap-3 text-sm text-muted">
+            <input
+              type="checkbox"
+              className="mt-1 size-4"
+              checked={addon}
+              onChange={(e) => setAddon(e.target.checked)}
+            />
+            <span>
+              Add {instagram.name} ({instagram.priceLabel})
+            </span>
+          </label>
+          {addon ? (
+            <label className="flex items-center justify-between gap-3 text-sm">
+              <span className="text-muted">Quantity · add-on</span>
+              <input
+                type="number"
+                min={1}
+                max={instagram.maxQuantity}
+                value={addonQty}
+                onChange={(e) => setAddonQty(Math.max(1, Number(e.target.value) || 1))}
+                className="h-11 w-20 rounded-lg bg-paper px-3 text-center shadow-(--shadow-card)"
+              />
+            </label>
+          ) : null}
+
           <label className="flex items-start gap-3 text-sm text-muted">
             <input
               type="checkbox"
@@ -152,16 +192,13 @@ function CheckoutPage() {
               . Digital All Access is not refundable after download or toolkit unlock.
             </span>
           </label>
-          {!stripeUrl ? (
-            <p className="rounded-lg bg-chip px-3 py-2 text-xs text-muted">
-              Stripe is not connected yet. Open Admin after sign-in and paste your Payment Link
-              — or put it in the site payment config.
-            </p>
-          ) : null}
-          <Button type="submit" className="w-full" size="lg" disabled={busy || !stripeUrl || !accepted}>
-            {busy ? "Sending you to Stripe…" : `Pay ${OFFER.priceLabel} with Stripe`}
+
+          {error ? <p className="rounded-lg bg-chip px-3 py-2 text-sm text-accent">{error}</p> : null}
+
+          <Button type="submit" className="w-full" size="lg" disabled={busy || !accepted}>
+            {busy ? "Sending you to Stripe…" : `Pay with Stripe · ${SITE.currency}`}
           </Button>
-          <p className="text-center text-xs text-subtle">PCI card fields live on Stripe, not here.</p>
+          <p className="text-center text-xs text-subtle">Test mode cards: 4242 4242 4242 4242</p>
         </form>
       </main>
     </SiteShell>
