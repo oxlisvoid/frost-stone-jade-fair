@@ -1,0 +1,8 @@
+- Recreated 10sorLabs webpanel UI as OxlisVoid static frontend at artifacts/oxlisvoid/index.html [2026-09-12]
+- Brand mapping: 10sorLabs→OxlisVoid, img2prompt→VoidPrompt, RapidCache→VoidCache; original tutorial videos not copied (copyright); used generated portraits + public sample videos [2026-09-12]
+- OxlisVoid commercial model: paid custom image/video generation — client briefs what they want, team delivers download (not self-serve generator) [2026-09-13]
+- Launch market: United States; goal is direct sales; IG/TikTok as SFW top-of-funnel only [2026-09-13]
+- olisvoid1.vercel.app is a preview URL only — never print it on IG creatives; use “Link in bio” and the real domain in the Instagram bio [2026-09-13]
+- Logo pack: artifacts/oxlisvoid/logo-ov-profile.jpg (IG avatar), logo-ov-badge, wordmarks, zip OxlisVoid-logo-pack.zip [2026-09-13]
+- Payments: Stripe Payment Links on static site; pages order.html terms.html refund.html privacy.html success.html + pay-config.js [2026-09-13]
+- Delivery rule: watermark preview first, final files only after captured payment; no public instant ZIP [2026-09-13]

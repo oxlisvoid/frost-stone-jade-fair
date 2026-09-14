@@ -1,0 +1,69 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { SiteShell } from "@/components/site-shell";
+import { OFFER, SITE } from "@/lib/site";
+
+export const Route = createFileRoute("/legal")({ component: LegalPage });
+
+function LegalPage() {
+  return (
+    <SiteShell>
+      <main className="mx-auto max-w-3xl space-y-14 px-4 py-16 sm:px-6">
+        <section id="privacy">
+          <h1 className="text-4xl tracking-tight">Privacy Policy</h1>
+          <p className="mt-4 text-sm leading-relaxed text-muted">
+            {SITE.name} collects name and email at checkout to deliver All Access. Stripe
+            processes the card on their domain — we never store PAN, expiry, or CVC. Admin
+            sign-in uses Google or X via a session cookie. Operator notes are stored per
+            signed-in account. Download links may log time and IP as delivery proof. We do
+            not sell lists. Contact{" "}
+            <a className="text-fg underline" href={`mailto:${SITE.email}`}>
+              {SITE.email}
+            </a>
+            .
+          </p>
+        </section>
+        <section id="terms">
+          <h2 className="text-4xl tracking-tight">Terms of Service</h2>
+          <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+            <p>
+              You must be 18 or older. All Access ({OFFER.priceLabel}) is a license to use
+              OxlisVoid workflows, tutorials, and files to produce original work.
+              Redistributing the graphs as a competing pack is not allowed.
+            </p>
+            <p>
+              Payment is captured by Stripe before toolkit unlock and file delivery. You are
+              responsible for how you publish generated characters.
+            </p>
+          </div>
+        </section>
+        <section id="refund">
+          <h2 className="text-4xl tracking-tight">Refund Policy</h2>
+          <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+            <p>
+              After the toolkit is unlocked or files are downloaded, the sale is complete. We
+              do not refund “changed my mind” or “I already downloaded it.”
+            </p>
+            <p>
+              We refund duplicate charges, corrupt files we cannot replace, or orders we
+              cannot start.
+            </p>
+            <p>
+              Email {SITE.email} from the checkout address within 7 days with the Stripe
+              receipt. Chargebacks after a completed download are contested with delivery
+              logs and this policy.
+            </p>
+          </div>
+        </section>
+        <section id="security">
+          <h2 className="text-4xl tracking-tight">Data protection</h2>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-muted">
+            <li>TLS in production (your live domain).</li>
+            <li>No card data on our origin.</li>
+            <li>Admin is authenticated; public pages cannot write operator notes.</li>
+            <li>Access flags for the toolkit stay in the buyer’s browser after a successful return from Stripe.</li>
+          </ul>
+        </section>
+      </main>
+    </SiteShell>
+  );
+}
