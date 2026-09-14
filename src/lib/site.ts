@@ -1,21 +1,21 @@
 export const SITE = {
   name: "OxlisVoid",
   tagline: "Own the stack. Run AI influencers without a monthly rent.",
-  price: 129.9,
-  comparePrice: 500,
+  price: 1000,
+  comparePrice: 1050,
   currency: "USD",
   email: "hello@oxlisvoid.com",
 } as const;
 
 export const PAYMENT = {
-  /** Paste the live Stripe Payment Link. Empty = checkout waits. */
-  stripePaymentLink: "",
-  successPath: "/checkout?paid=1",
+  /** Hosted Checkout — Price IDs come from Vercel env, not Payment Links. */
+  successPath: "/success",
+  cancelPath: "/canceled",
 } as const;
 
 export const OFFER = {
   name: "All Access",
-  priceLabel: "$129.90",
+  priceLabel: "$1,000",
   headline: "Every tool. One payment. No expiry on this price.",
   sells:
     "Image, video, motion, LoRA, skin, swap, inpaint, VoidPrompt, tutorials, and the course demo — unlocked together.",
@@ -211,7 +211,7 @@ export const COURSE = [
 
 export const FAQ = [
   {
-    q: "Is $129.90 a limited flash sale?",
+    q: "Is $1,000 a limited flash sale?",
     a: "No. This is the standing All Access price. No countdown, no fake timer. You get every tool that used to sit in separate kits.",
   },
   {

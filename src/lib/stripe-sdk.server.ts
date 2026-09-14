@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { mergeContent } from "./content";
 import { PRODUCTS, productById } from "./products";
 
 function requireSecret() {
@@ -43,7 +44,22 @@ export type CheckoutItemInput = {
   priceId?: string;
 };
 
-function lineItemFor(item: CheckoutItemInput): Stripe.Checkout.SessionCreateParams.LineItem {
+async function liveAmount(productId: string, fallback: number) {
+  if (productId !== "all-access") return fallback;
+  try {
+    const { getSql } = await import("./db");
+    const sql = await getSql();
+    const rows = await sql<{ payload: unknown }>`select payload from site_content where id = 1`;
+    const cents = mergeContent(rows[0]?.payload).priceCents;
+    return cents > 0 ? cents : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+async function lineItemFor(
+  item: CheckoutItemInput,
+): Promise<Stripe.Checkout.SessionCreateParams.LineItem> {
   const qty = Math.min(20, Math.max(1, Math.floor(item.quantity) || 1));
   const product = productById(item.productId);
   if (!product) throw new Error("Unknown product");
@@ -61,12 +77,12 @@ function lineItemFor(item: CheckoutItemInput): Stripe.Checkout.SessionCreatePara
     return { price: mapped, quantity: qty };
   }
 
-  // Works without a Dashboard Price ID: Stripe creates the charge from the catalog.
+  const unit_amount = await liveAmount(product.id, product.unitAmountCents);
   return {
     quantity: qty,
     price_data: {
       currency: "usd",
-      unit_amount: product.unitAmountCents,
+      unit_amount,
       product_data: {
         name: product.name,
         description: product.description,
@@ -83,7 +99,7 @@ export async function createStripeCheckout(input: {
 }) {
   if (!input.items.length) throw new Error("Select at least one product");
 
-  const line_items = input.items.map(lineItemFor);
+  const line_items = await Promise.all(input.items.map(lineItemFor));
 
   const origin = (input.origin?.replace(/\/$/, "") || publicSiteUrl()).replace(/\/$/, "");
   if (!origin) {

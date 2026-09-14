@@ -3,9 +3,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
 import { useAccess } from "@/lib/access";
+import { formatUsd } from "@/lib/content";
 import { createCheckoutSession } from "@/lib/checkout-fn";
 import { PRODUCTS } from "@/lib/products";
-import { INCLUDED, OFFER, SITE } from "@/lib/site";
+import { INCLUDED, SITE } from "@/lib/site";
+import { useSiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
@@ -25,6 +27,8 @@ function CheckoutPage() {
 
   const allAccess = PRODUCTS[0];
   const instagram = PRODUCTS[1];
+  const { content } = useSiteContent();
+  const price = formatUsd(content.priceCents);
 
   useEffect(() => {
     hydrate();
@@ -98,9 +102,9 @@ function CheckoutPage() {
       <main className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.9fr]">
         <div>
           <p className="text-sm font-medium text-accent">All Access · Stripe Checkout</p>
-          <h1 className="mt-2 text-4xl tracking-tight">{OFFER.headline}</h1>
+          <h1 className="mt-2 text-4xl tracking-tight">{content.headline}</h1>
           <p className="mt-3 text-muted">
-            {OFFER.sells} Card fields live on Stripe. This site never sees the number.
+            {content.sells} Card fields live on Stripe. This site never sees the number.
           </p>
           <ul className="mt-6 space-y-2 text-sm text-muted">
             {INCLUDED.map((item) => (
@@ -110,8 +114,8 @@ function CheckoutPage() {
         </div>
 
         <form onSubmit={pay} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
-          <p className="text-sm text-muted">{OFFER.name}</p>
-          <p className="font-display text-4xl">{OFFER.priceLabel}</p>
+          <p className="text-sm text-muted">{content.headline}</p>
+          <p className="font-display text-4xl">{price}</p>
 
           <label className="block text-sm">
             <span className="mb-1.5 block text-muted">Name</span>
@@ -198,7 +202,6 @@ function CheckoutPage() {
           <Button type="submit" className="w-full" size="lg" disabled={busy || !accepted}>
             {busy ? "Sending you to Stripe…" : `Pay with Stripe · ${SITE.currency}`}
           </Button>
-          <p className="text-center text-xs text-subtle">Test mode cards: 4242 4242 4242 4242</p>
         </form>
       </main>
     </SiteShell>

@@ -1,5 +1,6 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
+import { SiteContentProvider } from "@/lib/site-content";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
@@ -14,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "OxlisVoid All Access — every AI influencer workflow, course and toolkit for $129.90. One payment. No subscription.",
+          "OxlisVoid All Access — every AI influencer workflow, course and toolkit for $1,000. One payment. No subscription.",
       },
       { name: "theme-color", content: "#161310" },
     ],
@@ -27,7 +28,7 @@ export const Route = createRootRoute({
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;600;700&family=Figtree:wght@400;500;600;700&display=swap",
       },
     ],
   }),
@@ -39,7 +40,9 @@ export const Route = createRootRoute({
       <body className="antialiased">
         <PreviewHostBridge />
         <AuthProvider>
-          <Outlet />
+          <SiteContentProvider>
+            <Outlet />
+          </SiteContentProvider>
         </AuthProvider>
         <Scripts />
       </body>

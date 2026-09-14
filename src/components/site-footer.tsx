@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { SITE } from "@/lib/site";
+import { useSiteContent } from "@/lib/site-content";
 
 export function SiteFooter() {
+  const { content } = useSiteContent();
   return (
     <footer className="border-t border-line bg-surface">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
@@ -12,12 +14,19 @@ export function SiteFooter() {
             </span>
             <span className="font-semibold">{SITE.name}</span>
           </Link>
-          <p className="max-w-sm text-sm leading-relaxed text-muted">{SITE.tagline}</p>
+          <p className="max-w-sm text-sm leading-relaxed text-muted">{content.tagline}</p>
           <p className="text-sm text-muted">
-            <a className="hover:text-fg" href={`mailto:${SITE.email}`}>
-              {SITE.email}
+            <a className="hover:text-fg" href={`mailto:${content.email}`}>
+              {content.email}
             </a>
           </p>
+          {content.discordUrl ? (
+            <p className="text-sm">
+              <a className="text-fg underline" href={content.discordUrl} target="_blank" rel="noreferrer">
+                Join the Discord
+              </a>
+            </p>
+          ) : null}
         </div>
 
         <div>

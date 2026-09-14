@@ -17,10 +17,10 @@ export const PRODUCTS: CatalogProduct[] = [
   {
     id: "all-access",
     name: "All Access",
-    priceLabel: "$129.90",
+    priceLabel: "$1,000",
     description:
       "Every workflow, 13-lesson course, toolkit, and lifetime tool updates. One payment.",
-    unitAmountCents: 12990,
+    unitAmountCents: 100000,
     envPriceKey: "STRIPE_PRICE_ALL_ACCESS",
     defaultQuantity: 1,
     maxQuantity: 5,

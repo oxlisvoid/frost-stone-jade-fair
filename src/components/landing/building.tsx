@@ -1,6 +1,6 @@
 import { FitImage } from "@/components/fit-image";
-import { LoopVideo } from "@/components/loop-video";
-import { PORTRAITS } from "@/lib/site";
+import { SmartMedia } from "@/components/smart-media";
+import { useSiteContent } from "@/lib/site-content";
 
 const USES = [
   "Full AI influencers, monetizing through brand deals and fan platforms",
@@ -9,30 +9,8 @@ const USES = [
   "Commercial content for brands and marketing agencies",
 ] as const;
 
-const EXAMPLES = [
-  {
-    kind: "image" as const,
-    src: "/media/ex-ivy.jpg",
-    alt: "Night editorial still generated with OxlisVoid",
-    caption: "Image Kit — consistent character stills",
-  },
-  {
-    kind: "video" as const,
-    src: "/media/ex-selfie.mp4",
-    poster: "/media/ex-selfie.jpg",
-    label: "Mirror selfie reel",
-    caption: "Video Kit — ready-to-post reels",
-  },
-  {
-    kind: "video" as const,
-    src: "/media/ex-motion.mp4",
-    poster: "/media/ex-motion.jpg",
-    label: "Motion control clip",
-    caption: "Motion Kit — body copies the reference",
-  },
-];
-
 export function Building() {
+  const { content } = useSiteContent();
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
       <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -48,19 +26,15 @@ export function Building() {
       <p className="mt-4 text-sm text-subtle">(Generated with the workflows inside the toolkit)</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        {EXAMPLES.map((example) => (
+        {content.examples.map((example) => (
           <figure key={example.src} className="flex h-full flex-col rounded-xl bg-paper p-1.5 shadow-(--shadow-card)">
             <div className="overflow-hidden rounded-lg bg-ink">
-              {example.kind === "image" ? (
-                <FitImage src={example.src} alt={example.alt} className="aspect-9/16 object-contain" />
-              ) : (
-                <LoopVideo
-                  src={example.src}
-                  poster={example.poster}
-                  label={example.label}
-                  className="aspect-9/16 object-contain"
-                />
-              )}
+              <SmartMedia
+                src={example.src}
+                poster={example.poster}
+                alt={example.alt}
+                className="aspect-9/16 object-contain"
+              />
             </div>
             <figcaption className="mt-auto px-1 py-2 text-xs text-muted">{example.caption}</figcaption>
           </figure>
@@ -71,7 +45,8 @@ export function Building() {
 }
 
 export function Results() {
-  const loop = [...PORTRAITS, ...PORTRAITS];
+  const { content } = useSiteContent();
+  const loop = [...content.portraits, ...content.portraits];
   return (
     <section className="border-y border-line bg-surface py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
