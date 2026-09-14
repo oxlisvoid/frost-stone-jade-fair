@@ -6,7 +6,7 @@ import { RedirectToSignIn, SignedIn, SignedOut, UserButton } from "@/lib/auth/ga
 import { signOut } from "@/lib/auth/client";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { DEFAULT_CONTENT, formatUsd, type SiteContent } from "@/lib/content";
-import { deskLogout, deskStatus, loadSiteContent, saveSiteContent } from "@/lib/content-fns";
+import { deskLogout, deskStatus, loadSiteContent, loadStripeStatus, saveSiteContent, saveStripeSecret } from "@/lib/content-fns";
 import { loadOperator, saveOperator } from "@/lib/operator-fns";
 import { useSiteContent } from "@/lib/site-content";
 
@@ -72,12 +72,21 @@ function AdminDesk({ signedIn }: { signedIn: boolean }) {
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
+  const [stripeSecret, setStripeSecret] = useState("");
+  const [stripeHint, setStripeHint] = useState("");
+  const [stripeReady, setStripeReady] = useState(false);
 
   useEffect(() => {
     void loadSiteContent().then((data) => {
       setDraft(data);
       setContent(data);
     });
+    void loadStripeStatus()
+      .then((data) => {
+        setStripeReady(data.configured);
+        setStripeHint(data.hint);
+      })
+      .catch(() => undefined);
     if (!signedIn) return;
     void loadOperator()
       .then((data) => {
@@ -99,6 +108,23 @@ function AdminDesk({ signedIn }: { signedIn: boolean }) {
       setStatus("Site updated. Discord, media, and price are live.");
     } catch (err) {
       setStatus(err instanceof Error ? err.message : "Could not save the site.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const saveKey = async (event: FormEvent) => {
+    event.preventDefault();
+    setBusy(true);
+    setStatus("");
+    try {
+      const saved = await saveStripeSecret({ data: { secret: stripeSecret } });
+      setStripeReady(saved.configured);
+      setStripeHint(saved.hint);
+      setStripeSecret("");
+      setStatus("Stripe key saved. Checkout can charge All Access.");
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "Could not save the Stripe key.");
     } finally {
       setBusy(false);
     }
@@ -157,6 +183,25 @@ function AdminDesk({ signedIn }: { signedIn: boolean }) {
             </SignedOut>
           </div>
         </div>
+
+        <form onSubmit={saveKey} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
+          <h2 className="text-2xl">Stripe</h2>
+          <p className="text-sm text-muted">
+            {stripeReady
+              ? `Key connected (${stripeHint}). Paste a new sk_test_… key only if you need to replace it.`
+              : "Checkout needs a secret key. Paste the test key from Stripe Dashboard → Developers → API keys."}
+          </p>
+          <Field
+            label="Secret key"
+            value={stripeSecret}
+            onChange={setStripeSecret}
+            placeholder="sk_test_…"
+            type="password"
+          />
+          <Button type="submit" disabled={busy || stripeSecret.trim().length < 12}>
+            {busy ? "Saving…" : stripeReady ? "Replace Stripe key" : "Save Stripe key"}
+          </Button>
+        </form>
 
         <form onSubmit={saveSite} className="space-y-5 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <h2 className="text-2xl">Public site</h2>

@@ -2,36 +2,108 @@ import Stripe from "stripe";
 import { mergeContent } from "./content";
 import { PRODUCTS, productById } from "./products";
 
-function requireSecret() {
-  const key = process.env.STRIPE_SECRET_KEY?.trim();
+type EnvBag = { __oxlisStripeSecret?: string };
+
+function envBag(): EnvBag {
+  return globalThis as EnvBag;
+}
+
+async function readNodeEnv(name: string) {
+  const { env } = await import("node:process");
+  const value = env[name];
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function looksLikeStripeSecret(key: string) {
+  return /^(sk_test_|sk_live_|rk_test_|rk_live_)[a-zA-Z0-9]{8,}$/.test(key);
+}
+
+export async function resolveStripeSecret() {
+  const fromEnv =
+    (await readNodeEnv("STRIPE_SECRET_KEY")) ||
+    (await readNodeEnv("STRIPE_API_KEY")) ||
+    (await readNodeEnv("STRIPE_SECRET"));
+  if (fromEnv) return fromEnv;
+
+  const cached = envBag().__oxlisStripeSecret?.trim();
+  if (cached) return cached;
+
+  try {
+    const { getSql } = await import("./db");
+    const sql = await getSql();
+    const rows = await sql<{ stripe_secret_key: string }>`
+      select stripe_secret_key from site_secrets where id = 1
+    `;
+    const stored = rows[0]?.stripe_secret_key?.trim() ?? "";
+    if (stored) {
+      envBag().__oxlisStripeSecret = stored;
+      return stored;
+    }
+  } catch {
+    /* table may not exist yet */
+  }
+  return "";
+}
+
+export function maskStripeSecret(key: string) {
+  if (!key) return "";
+  if (key.length < 12) return "saved";
+  return `${key.slice(0, 8)}…${key.slice(-4)}`;
+}
+
+export async function persistStripeSecret(raw: string) {
+  const key = raw.trim();
+  if (!looksLikeStripeSecret(key)) {
+    throw new Error("Use a Stripe secret key that starts with sk_test_ or sk_live_.");
+  }
+  envBag().__oxlisStripeSecret = key;
+  try {
+    const { getSql } = await import("./db");
+    const sql = await getSql();
+    await sql.query(
+      `insert into site_secrets (id, stripe_secret_key, updated_at)
+       values (1, $1, now())
+       on conflict (id) do update set stripe_secret_key = excluded.stripe_secret_key, updated_at = now()`,
+      [key],
+    );
+  } catch {
+    /* in-memory key still works for this server process */
+  }
+  return { configured: true, hint: maskStripeSecret(key), source: "panel" as const };
+}
+
+async function requireSecret() {
+  const key = await resolveStripeSecret();
   if (!key) {
-    throw new Error("STRIPE_SECRET_KEY is not set");
+    throw new Error(
+      "Stripe secret key is not set. Paste sk_test_… in Admin, or add STRIPE_SECRET_KEY on Vercel and redeploy.",
+    );
   }
   return key;
 }
 
-export function getStripe() {
-  return new Stripe(requireSecret());
+export async function getStripe() {
+  return new Stripe(await requireSecret());
 }
 
-export function publicSiteUrl() {
-  const raw = process.env.DOMAIN?.trim();
-  if (raw) {
-    if (raw.startsWith("http://") || raw.startsWith("https://")) return raw.replace(/\/$/, "");
-    return `https://${raw.replace(/\/$/, "")}`;
+export async function publicSiteUrl() {
+  const raw =
+    (await readNodeEnv("DOMAIN")) ||
+    (await readNodeEnv("BETTER_AUTH_URL")) ||
+    (await readNodeEnv("VERCEL_PROJECT_PRODUCTION_URL")) ||
+    (await readNodeEnv("VERCEL_URL"));
+  if (!raw) return "";
+  if (raw.startsWith("http://") || raw.startsWith("https://")) return raw.replace(/\/$/, "");
+  return `https://${raw.replace(/\/$/, "")}`;
+}
+
+async function allowedPriceIds() {
+  const fromCatalog = [];
+  for (const product of PRODUCTS) {
+    const value = await readNodeEnv(product.envPriceKey);
+    if (value) fromCatalog.push(value);
   }
-  const prod = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  if (prod) return `https://${prod.replace(/\/$/, "")}`;
-  const vercel = process.env.VERCEL_URL?.trim();
-  if (vercel) return `https://${vercel.replace(/\/$/, "")}`;
-  return "";
-}
-
-function allowedPriceIds() {
-  const fromCatalog = PRODUCTS.map((p) => process.env[p.envPriceKey]?.trim()).filter(
-    (v): v is string => Boolean(v),
-  );
-  const extra = (process.env.STRIPE_PRICE_IDS ?? "")
+  const extra = (await readNodeEnv("STRIPE_PRICE_IDS"))
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -64,7 +136,7 @@ async function lineItemFor(
   const product = productById(item.productId);
   if (!product) throw new Error("Unknown product");
 
-  const allowed = allowedPriceIds();
+  const allowed = await allowedPriceIds();
   if (item.priceId) {
     if (!allowed.has(item.priceId)) {
       throw new Error("Unknown Stripe price. Add it to STRIPE_PRICE_* env vars.");
@@ -72,7 +144,7 @@ async function lineItemFor(
     return { price: item.priceId, quantity: qty };
   }
 
-  const mapped = process.env[product.envPriceKey]?.trim();
+  const mapped = await readNodeEnv(product.envPriceKey);
   if (mapped) {
     return { price: mapped, quantity: qty };
   }
@@ -101,12 +173,12 @@ export async function createStripeCheckout(input: {
 
   const line_items = await Promise.all(input.items.map(lineItemFor));
 
-  const origin = (input.origin?.replace(/\/$/, "") || publicSiteUrl()).replace(/\/$/, "");
+  const origin = (input.origin?.replace(/\/$/, "") || (await publicSiteUrl())).replace(/\/$/, "");
   if (!origin) {
     throw new Error("DOMAIN is not set. Add your site URL as DOMAIN on Vercel.");
   }
 
-  const stripe = getStripe();
+  const stripe = await getStripe();
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,
@@ -128,7 +200,7 @@ export async function createStripeCheckout(input: {
 
 export async function retrieveCheckoutSession(sessionId: string) {
   if (!sessionId.startsWith("cs_")) throw new Error("Invalid session");
-  const stripe = getStripe();
+  const stripe = await getStripe();
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ["line_items.data.price.product"],
   });

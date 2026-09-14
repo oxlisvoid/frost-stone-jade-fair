@@ -94,3 +94,24 @@ export const deskLogout = createServerFn({ method: "POST" }).handler(async () =>
   logoutDesk();
   return { ok: true as const };
 });
+
+export const loadStripeStatus = createServerFn({ method: "GET" }).handler(async () => {
+  const { assertOperator } = await import("./desk.server");
+  await assertOperator();
+  const { maskStripeSecret, resolveStripeSecret } = await import("./stripe-sdk.server");
+  const key = await resolveStripeSecret();
+  return {
+    configured: Boolean(key),
+    hint: key ? maskStripeSecret(key) : "",
+  };
+});
+
+export const saveStripeSecret = createServerFn({ method: "POST" })
+  .validator(z.object({ secret: z.string().min(8).max(200) }))
+  .handler(async ({ data }) => {
+    const { assertOperator } = await import("./desk.server");
+    await assertOperator();
+    const { persistStripeSecret } = await import("./stripe-sdk.server");
+    return persistStripeSecret(data.secret);
+  });
+
