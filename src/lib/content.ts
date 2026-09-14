@@ -37,7 +37,7 @@ export const DEFAULT_CONTENT: SiteContent = {
   headline: "Every tool. One payment. No expiry on this price.",
   sells:
     "Image, video, motion, LoRA, skin, swap, inpaint, VoidPrompt, tutorials, and the course demo — unlocked together.",
-  priceCents: 100000,
+  priceCents: 5990,
   comparePriceCents: 105000,
   heroClips: [
     { src: "/media/v-cafe.mp4", poster: "/media/p-cafe.jpg", label: "Cafe character" },

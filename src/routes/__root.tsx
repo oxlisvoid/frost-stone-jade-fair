@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "OxlisVoid All Access — every AI influencer workflow, course and toolkit for $1,000. One payment. No subscription.",
+          "OxlisVoid All Access — every AI influencer workflow, course and toolkit for $59.90. One payment. No subscription.",
       },
       { name: "theme-color", content: "#161310" },
     ],

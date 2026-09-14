@@ -237,7 +237,7 @@ function AdminDesk({ signedIn }: { signedIn: boolean }) {
                 step="1"
                 value={priceDollars}
                 onChange={(e) =>
-                  setDraft({ ...draft, priceCents: Math.max(1, Math.round(Number(e.target.value) * 100) || 100000) })
+                  setDraft({ ...draft, priceCents: Math.max(1, Math.round(Number(e.target.value) * 100) || 5990) })
                 }
                 className="h-11 w-full rounded-lg bg-paper px-3 shadow-(--shadow-card)"
               />
