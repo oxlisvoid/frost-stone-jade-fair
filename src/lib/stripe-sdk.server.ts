@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { mergeContent } from "./content";
 import { SEED_PRODUCTS, type CatalogProduct } from "./catalog";
+import { readStripeSecretFromEnv, runtimeEnv, stripeEnvFlags } from "./runtime-env.server";
 
 type EnvBag = { __oxlisStripeSecret?: string };
 
@@ -8,21 +9,12 @@ function envBag(): EnvBag {
   return globalThis as EnvBag;
 }
 
-async function readNodeEnv(name: string) {
-  const { env } = await import("node:process");
-  const value = env[name];
-  return typeof value === "string" ? value.trim() : "";
-}
-
 function looksLikeStripeSecret(key: string) {
   return /^(sk_test_|sk_live_|rk_test_|rk_live_)[a-zA-Z0-9]{8,}$/.test(key);
 }
 
 export async function resolveStripeSecret() {
-  const fromEnv =
-    (await readNodeEnv("STRIPE_SECRET_KEY")) ||
-    (await readNodeEnv("STRIPE_API_KEY")) ||
-    (await readNodeEnv("STRIPE_SECRET"));
+  const fromEnv = readStripeSecretFromEnv();
   if (fromEnv) return fromEnv;
 
   const cached = envBag().__oxlisStripeSecret?.trim();
@@ -75,8 +67,9 @@ export async function persistStripeSecret(raw: string) {
 async function requireSecret() {
   const key = await resolveStripeSecret();
   if (!key) {
+    const flags = stripeEnvFlags();
     throw new Error(
-      "Stripe secret key is not set. Paste sk_test_… in the operator desk, or add STRIPE_SECRET_KEY on Vercel and redeploy.",
+      `Stripe secret key is not set. In Vercel → Settings → Environment Variables add STRIPE_SECRET_KEY (sk_test_…) for Production and Preview, then Redeploy. Seen on this server: STRIPE_SECRET_KEY=${flags.STRIPE_SECRET_KEY ? "yes" : "no"} DATABASE_URL=${flags.DATABASE_URL ? "yes" : "no"}. Pasting in the desk only sticks when DATABASE_URL is set.`,
     );
   }
   return key;
@@ -88,10 +81,10 @@ export async function getStripe() {
 
 export async function publicSiteUrl() {
   const raw =
-    (await readNodeEnv("DOMAIN")) ||
-    (await readNodeEnv("BETTER_AUTH_URL")) ||
-    (await readNodeEnv("VERCEL_PROJECT_PRODUCTION_URL")) ||
-    (await readNodeEnv("VERCEL_URL"));
+    runtimeEnv("DOMAIN") ||
+    runtimeEnv("BETTER_AUTH_URL") ||
+    runtimeEnv("VERCEL_PROJECT_PRODUCTION_URL") ||
+    runtimeEnv("VERCEL_URL");
   if (!raw) return "";
   if (raw.startsWith("http://") || raw.startsWith("https://")) return raw.replace(/\/$/, "");
   return `https://${raw.replace(/\/$/, "")}`;
@@ -157,7 +150,7 @@ async function lineItemFor(
   if (!product || !product.active) throw new Error("Unknown product");
 
   const fromItem = item.priceId?.trim() ?? "";
-  const mapped = fromItem || product.stripePriceId.trim();
+  const mapped = fromItem || product.stripePriceId.trim() || runtimeEnv(product.id === "all-access" ? "STRIPE_PRICE_ALL_ACCESS" : "");
   if (mapped) {
     if (!mapped.startsWith("price_")) {
       throw new Error("Unknown Stripe price. Use a Price ID from the Stripe Dashboard.");
