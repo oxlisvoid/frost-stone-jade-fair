@@ -28,14 +28,13 @@ function CoursePage() {
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <h1 className="text-4xl tracking-tight sm:text-5xl">The classroom</h1>
           <Button asChild>
-            <Link to={unlocked ? "/toolkit" : "/checkout"}>
-              {unlocked ? "Open toolkit" : `Unlock everything ${OFFER.priceLabel}`}
-            </Link>
+            <Link to="/checkout">{`Get All Access ${OFFER.priceLabel}`}</Link>
           </Button>
         </div>
         <p className="mt-3 max-w-2xl text-muted">
-          Same lesson list as the paid pack. Welcome and character are open. The rest plays
-          after All Access — graphs and files never sit as a public ZIP.
+          This is a demonstration of the lesson list. Welcome and character are open. The real
+          course files are emailed within 24 hours after Stripe confirms payment — they are not a
+          public ZIP on this site.
         </p>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">

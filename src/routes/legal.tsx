@@ -11,11 +11,10 @@ function LegalPage() {
         <section id="privacy">
           <h1 className="text-4xl tracking-tight">Privacy Policy</h1>
           <p className="mt-4 text-sm leading-relaxed text-muted">
-            {SITE.name} collects name and email at checkout to deliver All Access. Stripe
-            processes the card on their domain — we never store PAN, expiry, or CVC. Admin
-            sign-in uses Google or X via a session cookie. Operator notes are stored per
-            signed-in account. Download links may log time and IP as delivery proof. We do
-            not sell lists. Contact{" "}
+            {SITE.name} collects name and email at checkout so we can email the toolkit.
+            Stripe processes the card on their domain — we never store PAN, expiry, or CVC.
+            Download and delivery logs may include time and IP as proof. We do not sell lists.
+            Contact{" "}
             <a className="text-fg underline" href={`mailto:${SITE.email}`}>
               {SITE.email}
             </a>
@@ -31,8 +30,8 @@ function LegalPage() {
               Redistributing the graphs as a competing pack is not allowed.
             </p>
             <p>
-              Payment is captured by Stripe before toolkit unlock and file delivery. You are
-              responsible for how you publish generated characters.
+              Payment is captured by Stripe before we email the workflows and files (within 24 hours).
+              You are responsible for how you publish generated characters.
             </p>
           </div>
         </section>
@@ -40,8 +39,8 @@ function LegalPage() {
           <h2 className="text-4xl tracking-tight">Refund Policy</h2>
           <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
             <p>
-              After the toolkit is unlocked or files are downloaded, the sale is complete. We
-              do not refund “changed my mind” or “I already downloaded it.”
+              After the toolkit is emailed, the sale is complete. We do not refund “changed my
+              mind” or “I already received the files.”
             </p>
             <p>
               We refund duplicate charges, corrupt files we cannot replace, or orders we
@@ -59,8 +58,8 @@ function LegalPage() {
           <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-muted">
             <li>TLS in production (your live domain).</li>
             <li>No card data on our origin.</li>
-            <li>Admin is authenticated; public pages cannot write operator notes.</li>
-            <li>Access flags for the toolkit stay in the buyer’s browser after a successful return from Stripe.</li>
+            <li>Operator desk is password-gated and not linked from the public site.</li>
+            <li>The toolkit and course on this site are demos. Paid files are emailed after Stripe confirms payment.</li>
           </ul>
         </section>
       </main>

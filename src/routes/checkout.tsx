@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
-import { useAccess } from "@/lib/access";
-import { formatUsd } from "@/lib/content";
+import { SEED_PRODUCTS, type CatalogProduct } from "@/lib/catalog";
+import { loadCatalog } from "@/lib/catalog-fns";
 import { createCheckoutSession } from "@/lib/checkout-fn";
-import { PRODUCTS } from "@/lib/products";
+import { formatUsd } from "@/lib/content";
 import { INCLUDED, SITE } from "@/lib/site";
 import { useSiteContent } from "@/lib/site-content";
 
@@ -14,31 +14,36 @@ export const Route = createFileRoute("/checkout")({
 });
 
 function CheckoutPage() {
-  const unlocked = useAccess((s) => s.unlocked);
-  const hydrate = useAccess((s) => s.hydrate);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [accepted, setAccepted] = useState(false);
   const [qty, setQty] = useState(1);
-  const [addon, setAddon] = useState(false);
-  const [addonQty, setAddonQty] = useState(1);
+  const [addons, setAddons] = useState<Record<string, boolean>>({});
+  const [catalog, setCatalog] = useState<CatalogProduct[]>(SEED_PRODUCTS);
 
-  const allAccess = PRODUCTS[0];
-  const instagram = PRODUCTS[1];
   const { content } = useSiteContent();
   const price = formatUsd(content.priceCents);
+  const primary = catalog.find((p) => !p.addon) ?? catalog[0];
+  const extras = catalog.filter((p) => p.addon && p.active);
 
   useEffect(() => {
-    hydrate();
-  }, [hydrate]);
+    void loadCatalog()
+      .then((rows) => {
+        if (rows.length) setCatalog(rows);
+      })
+      .catch(() => undefined);
+  }, []);
 
   const items = useMemo(() => {
-    const next = [{ productId: allAccess.id, quantity: qty }];
-    if (addon) next.push({ productId: instagram.id, quantity: addonQty });
+    if (!primary) return [];
+    const next = [{ productId: primary.id, quantity: qty }];
+    for (const extra of extras) {
+      if (addons[extra.id]) next.push({ productId: extra.id, quantity: 1 });
+    }
     return next;
-  }, [addon, addonQty, allAccess.id, instagram.id, qty]);
+  }, [addons, extras, primary, qty]);
 
   const pay = async (event: FormEvent) => {
     event.preventDefault();
@@ -48,7 +53,7 @@ function CheckoutPage() {
       return;
     }
     if (!name.trim() || !email.trim()) {
-      setError("Name and email are required.");
+      setError("Name and the delivery email are required.");
       return;
     }
     setBusy(true);
@@ -61,14 +66,6 @@ function CheckoutPage() {
           origin: window.location.origin,
         },
       });
-      try {
-        localStorage.setItem(
-          "oxlisvoid-last-order",
-          JSON.stringify({ name, email, items, at: new Date().toISOString() }),
-        );
-      } catch {
-        /* ignore */
-      }
       if (!session.url) throw new Error("Stripe did not return a checkout URL");
       window.location.assign(session.url);
     } catch (err) {
@@ -77,22 +74,10 @@ function CheckoutPage() {
     }
   };
 
-  if (unlocked) {
+  if (!primary) {
     return (
       <SiteShell>
-        <main className="mx-auto max-w-lg px-4 py-20 text-center">
-          <p className="text-sm font-medium text-good">Access on this device</p>
-          <h1 className="mt-2 text-4xl">You're in.</h1>
-          <p className="mt-3 text-muted">Course and toolkit are open on this browser.</p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild>
-              <Link to="/toolkit">Open toolkit</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/course">Open course</Link>
-            </Button>
-          </div>
-        </main>
+        <main className="mx-auto max-w-lg px-4 py-20 text-muted">No products are for sale yet.</main>
       </SiteShell>
     );
   }
@@ -104,7 +89,9 @@ function CheckoutPage() {
           <p className="text-sm font-medium text-accent">All Access · Stripe Checkout</p>
           <h1 className="mt-2 text-4xl tracking-tight">{content.headline}</h1>
           <p className="mt-3 text-muted">
-            {content.sells} Card fields live on Stripe. This site never sees the number.
+            Use the email where you want the toolkit. After Stripe confirms payment we send the real
+            workflows, tutorials, and files within 24 hours. The course and toolkit here are demos.
+            Card fields live on Stripe.
           </p>
           <ul className="mt-6 space-y-2 text-sm text-muted">
             {INCLUDED.map((item) => (
@@ -114,7 +101,7 @@ function CheckoutPage() {
         </div>
 
         <form onSubmit={pay} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
-          <p className="text-sm text-muted">{content.headline}</p>
+          <p className="text-sm text-muted">Lifetime · one payment</p>
           <p className="font-display text-4xl">{price}</p>
 
           <label className="block text-sm">
@@ -128,7 +115,7 @@ function CheckoutPage() {
             />
           </label>
           <label className="block text-sm">
-            <span className="mb-1.5 block text-muted">Email</span>
+            <span className="mb-1.5 block text-muted">Email that receives the tools</span>
             <input
               required
               type="email"
@@ -136,45 +123,38 @@ function CheckoutPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="h-11 w-full rounded-lg bg-paper px-3 shadow-(--shadow-card)"
               autoComplete="email"
+              placeholder="you@email.com"
             />
+            <span className="mt-1 block text-xs text-subtle">
+              We email the pack here within 24 hours of payment. Double-check the spelling.
+            </span>
           </label>
 
           <label className="flex items-center justify-between gap-3 text-sm">
-            <span className="text-muted">Quantity · {allAccess.name}</span>
+            <span className="text-muted">Quantity · {primary.name}</span>
             <input
               type="number"
               min={1}
-              max={allAccess.maxQuantity}
+              max={5}
               value={qty}
               onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
               className="h-11 w-20 rounded-lg bg-paper px-3 text-center shadow-(--shadow-card)"
             />
           </label>
 
-          <label className="flex items-start gap-3 text-sm text-muted">
-            <input
-              type="checkbox"
-              className="mt-1 size-4"
-              checked={addon}
-              onChange={(e) => setAddon(e.target.checked)}
-            />
-            <span>
-              Add {instagram.name} ({instagram.priceLabel})
-            </span>
-          </label>
-          {addon ? (
-            <label className="flex items-center justify-between gap-3 text-sm">
-              <span className="text-muted">Quantity · add-on</span>
+          {extras.map((extra) => (
+            <label key={extra.id} className="flex items-start gap-3 text-sm text-muted">
               <input
-                type="number"
-                min={1}
-                max={instagram.maxQuantity}
-                value={addonQty}
-                onChange={(e) => setAddonQty(Math.max(1, Number(e.target.value) || 1))}
-                className="h-11 w-20 rounded-lg bg-paper px-3 text-center shadow-(--shadow-card)"
+                type="checkbox"
+                className="mt-1 size-4"
+                checked={Boolean(addons[extra.id])}
+                onChange={(e) => setAddons((prev) => ({ ...prev, [extra.id]: e.target.checked }))}
               />
+              <span>
+                Add {extra.name} ({formatUsd(extra.unitAmountCents)})
+              </span>
             </label>
-          ) : null}
+          ))}
 
           <label className="flex items-start gap-3 text-sm text-muted">
             <input
@@ -193,7 +173,7 @@ function CheckoutPage() {
               <Link to="/legal" hash="refund" className="text-fg underline">
                 Refund Policy
               </Link>
-              . Digital All Access is not refundable after download or toolkit unlock.
+              . Digital All Access is not refundable after the files are emailed.
             </span>
           </label>
 

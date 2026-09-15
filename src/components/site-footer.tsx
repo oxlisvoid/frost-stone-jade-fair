@@ -1,9 +1,20 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { loadPublicPosts } from "@/lib/catalog-fns";
+import type { SitePost } from "@/lib/catalog";
 import { SITE } from "@/lib/site";
 import { useSiteContent } from "@/lib/site-content";
 
 export function SiteFooter() {
   const { content } = useSiteContent();
+  const [posts, setPosts] = useState<SitePost[]>([]);
+
+  useEffect(() => {
+    void loadPublicPosts()
+      .then(setPosts)
+      .catch(() => undefined);
+  }, []);
+
   return (
     <footer className="border-t border-line bg-surface">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4">
@@ -20,13 +31,9 @@ export function SiteFooter() {
               {content.email}
             </a>
           </p>
-          {content.discordUrl ? (
-            <p className="text-sm">
-              <a className="text-fg underline" href={content.discordUrl} target="_blank" rel="noreferrer">
-                Join the Discord
-              </a>
-            </p>
-          ) : null}
+          <p className="text-sm text-muted">
+            30+ people online. Tools emailed within 24 hours of payment.
+          </p>
         </div>
 
         <div>
@@ -39,7 +46,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link to="/toolkit" className="hover:text-muted">
-                Toolkit
+                Toolkit demo
               </Link>
             </li>
             <li>
@@ -52,35 +59,43 @@ export function SiteFooter() {
                 All Access
               </Link>
             </li>
-            <li>
-              <Link to="/admin" className="hover:text-muted">
-                Admin
-              </Link>
-            </li>
           </ul>
         </div>
 
         <div>
-          <p className="mb-3 text-xs font-semibold tracking-wide text-subtle uppercase">Legal</p>
+          <p className="mb-3 text-xs font-semibold tracking-wide text-subtle uppercase">Community</p>
           <ul className="space-y-2 text-sm">
+            {content.discordUrl ? (
+              <li>
+                <a className="hover:text-muted" href={content.discordUrl} target="_blank" rel="noreferrer">
+                  Discord
+                </a>
+              </li>
+            ) : null}
+            {posts.map((post) =>
+              post.url ? (
+                <li key={post.id}>
+                  <a className="hover:text-muted" href={post.url} target="_blank" rel="noreferrer">
+                    {post.title}
+                  </a>
+                </li>
+              ) : (
+                <li key={post.id}>{post.title}</li>
+              ),
+            )}
             <li>
               <Link to="/legal" hash="privacy" className="hover:text-muted">
-                Privacy Policy
+                Privacy
               </Link>
             </li>
             <li>
               <Link to="/legal" hash="terms" className="hover:text-muted">
-                Terms of Service
+                Terms
               </Link>
             </li>
             <li>
               <Link to="/legal" hash="refund" className="hover:text-muted">
-                Refund Policy
-              </Link>
-            </li>
-            <li>
-              <Link to="/legal" hash="security" className="hover:text-muted">
-                Data protection
+                Refunds
               </Link>
             </li>
           </ul>

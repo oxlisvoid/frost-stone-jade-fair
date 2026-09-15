@@ -19,8 +19,8 @@ export function Playbooks() {
           <div className="p-5">
             <h3 className="text-lg font-semibold">TikTok account launch + scaling guide</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Niche selection, hook formulas, posting cadence, and how to keep a fictional
-              creator looking native to For You.
+              Niche selection, hook formulas, posting cadence, and how to sell products with a
+              fictional creator without looking like an ad on day three.
             </p>
           </div>
         </article>
@@ -34,8 +34,8 @@ export function Playbooks() {
           <div className="p-5">
             <h3 className="text-lg font-semibold">Instagram account launch + scaling guide</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Grid vs Reels, carousel structure, bio-to-offer path, and the weekly batch
-              schedule we actually use.
+              Grid vs Reels, carousel structure, bio-to-offer path, and using the model to sell
+              products and pull traffic to fan platforms.
             </p>
           </div>
         </article>

@@ -18,7 +18,8 @@ export function Hero() {
         </h1>
         <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted">
           Run AI influencers with the full OxlisVoid stack — image, video, motion, LoRA, course —
-          without stacking $97 / $235 / $500 kits. One payment. No subscription.
+          and sell with those models on TikTok, Instagram, and fan platforms. One payment. Lifetime.
+          The pack is emailed within 24 hours. This site shows demos only.
         </p>
 
         <p className="mt-7 text-sm font-medium">You will learn how to:</p>
@@ -44,7 +45,7 @@ export function Hero() {
         </div>
 
         <p className="mt-4 text-sm text-subtle">
-          Was {formatUsd(content.comparePriceCents)} as Mentorship · Stripe checkout · no card stored here
+          Was {formatUsd(content.comparePriceCents)} as Mentorship · Stripe checkout · tools emailed in 24h
         </p>
       </div>
 

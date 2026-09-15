@@ -54,18 +54,23 @@ function SuccessPage() {
         {state === "loading" ? <p className="text-muted">Confirming Stripe payment…</p> : null}
         {state === "paid" ? (
           <>
-            <p className="text-sm font-medium text-good">Payment received</p>
-            <h1 className="mt-2 text-4xl">You're in.</h1>
-            <p className="mt-3 text-muted">
-              Stripe emailed a receipt{email ? ` to ${email}` : ""}. Toolkit and course are unlocked on this
-              device.
+            <p className="text-sm font-medium text-good">Payment confirmed</p>
+            <h1 className="mt-2 text-4xl">Check your email</h1>
+            <p className="mt-4 text-muted">
+              Stripe captured the payment{email ? ` for ${email}` : ""}. The toolkit and course on this
+              site are demos. The real workflows, tutorials, playbooks, and prompt libraries are
+              emailed to that address within 24 hours.
+            </p>
+            <p className="mt-3 text-sm text-muted">
+              Check spam and promotions. More than 30 people are online if you need a hand —
+              reply to the delivery email or write hello@oxlisvoid.com.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button asChild>
-                <Link to="/toolkit">Open toolkit</Link>
+                <Link to="/toolkit">Browse the demo</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link to="/course">Open course</Link>
+                <Link to="/">Back home</Link>
               </Button>
             </div>
           </>

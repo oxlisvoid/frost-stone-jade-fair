@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Building, Results } from "@/components/landing/building";
+import { Building } from "@/components/landing/building";
+import { Care } from "@/components/landing/care";
 import { Faq } from "@/components/landing/faq";
 import { GpuCheck } from "@/components/landing/gpu-check";
 import { Hero } from "@/components/landing/hero";
+import { Included } from "@/components/landing/included";
 import { Playbooks } from "@/components/landing/playbooks";
 import { Pricing } from "@/components/landing/pricing";
+import { Proof } from "@/components/landing/proof";
 import { Tutorials } from "@/components/landing/tutorials";
 import { Voices } from "@/components/landing/voices";
 import { Workflows } from "@/components/landing/workflows";
@@ -23,7 +26,9 @@ function Home() {
         <Playbooks />
         <GpuCheck />
         <Building />
-        <Results />
+        <Proof />
+        <Included />
+        <Care />
         <Pricing />
         <Faq />
       </main>

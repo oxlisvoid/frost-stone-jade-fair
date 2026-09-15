@@ -36,7 +36,7 @@ export function Pricing() {
             <Link to="/checkout">Pay {price} with Stripe</Link>
           </Button>
           <p className="mt-3 text-xs text-paper/50">
-            Digital goods. After toolkit unlock or file download, the sale is final.
+            Digital goods. The real toolkit is emailed within 24 hours. After delivery the sale is final.
           </p>
         </div>
 

@@ -4,7 +4,7 @@ import { useSiteContent } from "@/lib/site-content";
 
 const USES = [
   "Full AI influencers, monetizing through brand deals and fan platforms",
-  "Fictional creators promoting products",
+  "Fictional creators promoting and selling products on TikTok and Instagram",
   "Content automation — producing and scheduling at scale",
   "Commercial content for brands and marketing agencies",
 ] as const;

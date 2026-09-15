@@ -60,17 +60,14 @@ function ToolkitPage() {
         <p className="text-sm font-medium text-muted">Demo panel</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">OxlisVoid toolkit</h1>
-          {!unlocked ? (
-            <Button asChild>
-              <Link to="/checkout">Unlock All Access</Link>
-            </Button>
-          ) : (
-            <p className="text-sm text-muted">Access unlocked on this device.</p>
-          )}
+          <Button asChild>
+            <Link to="/checkout">Get All Access</Link>
+          </Button>
         </div>
         <p className="mt-3 max-w-2xl text-muted">
-          Browse the workflows the way they ship. Graphs, tutorials and prompt libraries
-          unlock after checkout — the previews below are live.
+          Browse the workflows the way they ship. This page is a demonstration. After payment we
+          email the graphs, tutorials, and prompt libraries to the address you enter at checkout —
+          within 24 hours.
         </p>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[240px_1fr]">

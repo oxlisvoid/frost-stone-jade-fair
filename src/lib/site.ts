@@ -18,7 +18,7 @@ export const OFFER = {
   priceLabel: "$59.90",
   headline: "Every tool. One payment. No expiry on this price.",
   sells:
-    "Image, video, motion, LoRA, skin, swap, inpaint, VoidPrompt, tutorials, and the course demo — unlocked together.",
+    "Image, video, motion, LoRA, skin, swap, inpaint, VoidPrompt, tutorials, and the course demo. The real pack is emailed within 24 hours of payment.",
 } as const;
 
 export const KITS = [
@@ -62,11 +62,12 @@ export const ADDON = {
 } as const;
 
 export const INCLUDED = [
-  "All 7 production workflows",
-  "13-lesson course (English, Portuguese, Spanish)",
-  "24h group with real people",
-  "OxlisVoid server if your PC is weak",
-  "Lifetime tool updates — no monthly fee",
+  "7 plug-and-play ComfyUI workflows",
+  "13 step-by-step tutorials",
+  "2 social growth playbooks (TikTok + Instagram)",
+  "Prompt libraries and helpful tools",
+  "Lifetime updates — free forever",
+  "Emailed within 24 hours of payment",
 ] as const;
 
 export const NOT_SOLD = [
@@ -211,36 +212,40 @@ export const COURSE = [
 
 export const FAQ = [
   {
+    q: "When do I receive the tools?",
+    a: "The toolkit and course on this website are demos. After Stripe confirms payment we email the real workflows, tutorials, playbooks, and prompt libraries to the address you enter at checkout — within 24 hours. Check spam if you do not see it.",
+  },
+  {
+    q: "Why do you need my email?",
+    a: "That is the inbox that receives the pack. Use an address you actually check. Stripe also sends the receipt there.",
+  },
+  {
     q: "Is $59.90 a limited flash sale?",
-    a: "No. This is the standing All Access price. No countdown, no fake timer. You get every tool that used to sit in separate kits.",
+    a: "No. This is the standing All Access price for unlimited time. No countdown, no fake timer, no subscription.",
   },
   {
     q: "What if I get stuck?",
-    a: "You get direct support with the toolkit. Write in, send a screenshot, and we walk the node graph with you.",
+    a: "We take care of our clients. More than 30 people are online to help you install, train a LoRA, and ship content. Write in with a screenshot.",
   },
   {
-    q: "When does the course start?",
-    a: "The recorded course and demo classroom are in the pack. Tools unlock as soon as Stripe captures the payment.",
+    q: "Can I sell with the models I create?",
+    a: "Yes. The system is built so you can create AI models and sell products with them on TikTok, Instagram, fan platforms, and brand deals. The two growth playbooks cover launch and scaling.",
   },
   {
     q: "Do I need a powerful computer?",
-    a: "No. Every purchase includes the OxlisVoid server if your PC is weak. Most people generate on a cloud GPU anyway.",
+    a: "No. Every purchase includes the OxlisVoid server if your PC is weak. Most people generate on a cloud GPU anyway. Mac works.",
   },
   {
     q: "How do you take payment?",
-    a: "Stripe hosted checkout. Card numbers never touch this website. Digital delivery after the charge clears. After download or toolkit unlock, the sale is final.",
+    a: "Stripe hosted checkout. Card numbers never touch this website. The toolkit is emailed after the charge clears. After delivery, the sale is final.",
   },
   {
     q: "Are there any subscriptions?",
-    a: "No. Pay once. No monthly payment. Tools have no usage cap.",
+    a: "No. Pay once. Lifetime access and lifetime tool updates. No monthly payment.",
   },
   {
     q: "Do I need coding experience?",
     a: "No. Everything is explained step by step and designed for beginners who have never opened ComfyUI.",
-  },
-  {
-    q: "Does this work on Mac?",
-    a: "Yes. Generate locally on Apple Silicon, use a cloud GPU, or use the OxlisVoid server.",
   },
 ] as const;
 

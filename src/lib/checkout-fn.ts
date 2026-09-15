@@ -11,7 +11,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .validator(
     z.object({
       items: z.array(itemSchema).min(1).max(10),
-      email: z.string().email().max(200).optional(),
+      email: z.string().email().max(200),
       name: z.string().max(120).optional(),
       origin: z.string().url().optional(),
     }),
@@ -27,3 +27,11 @@ export const loadCheckoutSession = createServerFn({ method: "GET" })
     const { retrieveCheckoutSession } = await import("./stripe-sdk.server");
     return retrieveCheckoutSession(data.sessionId);
   });
+
+export const loadStripePublishableKey = createServerFn({ method: "GET" }).handler(async () => {
+  return (
+    process.env.VITE_STRIPE_PUBLISHABLE_KEY?.trim() ||
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.trim() ||
+    ""
+  );
+});

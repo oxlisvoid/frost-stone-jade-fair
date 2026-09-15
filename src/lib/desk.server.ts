@@ -1,9 +1,9 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getCookie, getRequest, setCookie } from "@tanstack/react-start/server";
-import { getSessionUser } from "@/lib/auth/verify.server";
 
 const COOKIE = "oxlis_desk";
-const DEFAULT_PIN = "oxlisvoid";
+/** Server-only. Never imported from a client module. Override with OPERATOR_PASSWORD. */
+const DEFAULT_PIN = "OxVoid#7149";
 
 function secret() {
   return (
@@ -51,14 +51,12 @@ export function hasDeskCookie() {
 }
 
 export async function isOperator() {
-  if (hasDeskCookie()) return true;
-  const user = await getSessionUser();
-  return Boolean(user);
+  return hasDeskCookie();
 }
 
 export async function assertOperator() {
   if (!(await isOperator())) {
-    throw new Error("Sign in to edit the site.");
+    throw new Error("Operator only.");
   }
 }
 
