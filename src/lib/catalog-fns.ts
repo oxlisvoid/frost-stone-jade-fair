@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { getSql } from "@/lib/db";
 import { SEED_PRODUCTS, slugify, type CatalogProduct, type SitePost } from "./catalog";
 
 type ProductRow = {
@@ -48,14 +47,31 @@ function asPost(row: PostRow): SitePost {
   };
 }
 
-async function readProducts(): Promise<CatalogProduct[]> {
+async function readSqlProducts(): Promise<CatalogProduct[]> {
   try {
+    const { getSql, dbSource } = await import("./db");
+    if (dbSource !== "neon") return [];
     const sql = await getSql();
     const rows = await sql<ProductRow>`select * from catalog_products order by sort_order asc, name asc`;
-    if (rows.length) return rows.map(asProduct);
+    return rows.map(asProduct);
   } catch {
-    /* table may not exist yet */
+    return [];
   }
+}
+
+async function readProducts(): Promise<CatalogProduct[]> {
+  try {
+    const { listStripeCatalog } = await import("./stripe-catalog.server");
+    const fromStripe = await listStripeCatalog(true);
+    if (fromStripe.length) {
+      const hasPrimary = fromStripe.some((p) => !p.addon);
+      return hasPrimary ? fromStripe : [...SEED_PRODUCTS.filter((p) => !p.addon), ...fromStripe];
+    }
+  } catch {
+    /* Stripe key missing or API error */
+  }
+  const fromSql = await readSqlProducts();
+  if (fromSql.length) return fromSql;
   return SEED_PRODUCTS;
 }
 
@@ -90,37 +106,69 @@ export const saveCatalogProduct = createServerFn({ method: "POST" })
     if (priceId && !priceId.startsWith("price_")) {
       throw new Error("Stripe Price ID must start with price_");
     }
-    const sql = await getSql();
-    await sql.query(
-      `insert into catalog_products
-        (id, name, description, unit_amount_cents, stripe_price_id, addon, active, sort_order, updated_at)
-       values ($1, $2, $3, $4, $5, $6, $7, 10, now())
-       on conflict (id) do update set
-         name = excluded.name,
-         description = excluded.description,
-         unit_amount_cents = excluded.unit_amount_cents,
-         stripe_price_id = excluded.stripe_price_id,
-         addon = excluded.addon,
-         active = excluded.active,
-         updated_at = now()`,
-      [id, data.name.trim(), data.description.trim(), data.unitAmountCents, priceId, data.addon ? 1 : 0, data.active ? 1 : 0],
-    );
-    return { ok: true as const, id };
+    const { upsertStripeProduct } = await import("./stripe-catalog.server");
+    const saved = await upsertStripeProduct({ ...data, id, stripePriceId: priceId });
+    try {
+      const { getSql, dbSource } = await import("./db");
+      if (dbSource === "neon") {
+        const sql = await getSql();
+        await sql.query(
+          `insert into catalog_products
+            (id, name, description, unit_amount_cents, stripe_price_id, addon, active, sort_order, updated_at)
+           values ($1, $2, $3, $4, $5, $6, $7, 10, now())
+           on conflict (id) do update set
+             name = excluded.name,
+             description = excluded.description,
+             unit_amount_cents = excluded.unit_amount_cents,
+             stripe_price_id = excluded.stripe_price_id,
+             addon = excluded.addon,
+             active = excluded.active,
+             updated_at = now()`,
+          [
+            saved.id,
+            saved.name,
+            saved.description,
+            saved.unitAmountCents,
+            saved.stripePriceId,
+            saved.addon ? 1 : 0,
+            saved.active ? 1 : 0,
+          ],
+        );
+      }
+    } catch {
+      /* Stripe is the source of truth on Vercel */
+    }
+    return { ok: true as const, id: saved.id, stripePriceId: saved.stripePriceId };
   });
 
 export const deleteCatalogProduct = createServerFn({ method: "POST" })
-  .validator(z.object({ id: z.string().min(1).max(40) }))
+  .validator(z.object({ id: z.string().min(1).max(80) }))
   .handler(async ({ data }) => {
     const { assertOperator } = await import("./desk.server");
     await assertOperator();
     if (data.id === "all-access") throw new Error("All Access cannot be removed.");
-    const sql = await getSql();
-    await sql.query(`delete from catalog_products where id = $1`, [data.id]);
+    try {
+      const { archiveStripeProduct } = await import("./stripe-catalog.server");
+      await archiveStripeProduct(data.id);
+    } catch {
+      /* continue */
+    }
+    try {
+      const { getSql, dbSource } = await import("./db");
+      if (dbSource === "neon") {
+        const sql = await getSql();
+        await sql.query(`delete from catalog_products where id = $1`, [data.id]);
+      }
+    } catch {
+      /* Stripe archive is enough */
+    }
     return { ok: true as const };
   });
 
 export const loadPublicPosts = createServerFn({ method: "GET" }).handler(async () => {
   try {
+    const { getSql, dbSource } = await import("./db");
+    if (dbSource !== "neon") return [] as SitePost[];
     const sql = await getSql();
     const rows = await sql<PostRow>`
       select * from site_posts where published = 1 order by created_at desc
@@ -135,6 +183,8 @@ export const loadAllPosts = createServerFn({ method: "GET" }).handler(async () =
   const { assertOperator } = await import("./desk.server");
   await assertOperator();
   try {
+    const { getSql, dbSource } = await import("./db");
+    if (dbSource !== "neon") return [] as SitePost[];
     const sql = await getSql();
     const rows = await sql<PostRow>`select * from site_posts order by created_at desc`;
     return rows.map(asPost);
@@ -162,6 +212,10 @@ export const saveSitePost = createServerFn({ method: "POST" })
     if (data.kind === "discord" && url && !/^https:\/\/(discord\.gg|discord\.com)\//i.test(url)) {
       throw new Error("Discord link must start with https://discord.gg/ or https://discord.com/");
     }
+    const { getSql, dbSource } = await import("./db");
+    if (dbSource !== "neon") {
+      throw new Error("Posts need a database. Set DATABASE_URL (Neon) on Vercel, or add the Discord link in Site content.");
+    }
     const id = data.id?.trim() || slugify(data.title);
     const sql = await getSql();
     await sql.query(
@@ -183,6 +237,8 @@ export const deleteSitePost = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { assertOperator } = await import("./desk.server");
     await assertOperator();
+    const { getSql, dbSource } = await import("./db");
+    if (dbSource !== "neon") return { ok: true as const };
     const sql = await getSql();
     await sql.query(`delete from site_posts where id = $1`, [data.id]);
     return { ok: true as const };

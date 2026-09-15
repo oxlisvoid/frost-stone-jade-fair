@@ -92,30 +92,39 @@ export async function publicSiteUrl() {
 
 async function lookupProduct(id: string): Promise<CatalogProduct | undefined> {
   try {
-    const { getSql } = await import("./db");
-    const sql = await getSql();
-    const rows = await sql<{
-      id: string;
-      name: string;
-      description: string;
-      unit_amount_cents: number;
-      stripe_price_id: string;
-      addon: number | boolean;
-      active: number | boolean;
-      sort_order: number;
-    }>`select * from catalog_products where id = ${id} limit 1`;
-    const row = rows[0];
-    if (row) {
-      return {
-        id: row.id,
-        name: row.name,
-        description: row.description,
-        unitAmountCents: Number(row.unit_amount_cents) || 0,
-        stripePriceId: row.stripe_price_id ?? "",
-        addon: Boolean(row.addon),
-        active: Boolean(row.active),
-        sortOrder: Number(row.sort_order) || 0,
-      };
+    const { getStripeProduct } = await import("./stripe-catalog.server");
+    const fromStripe = await getStripeProduct(id);
+    if (fromStripe) return fromStripe;
+  } catch {
+    /* fall through */
+  }
+  try {
+    const { getSql, dbSource } = await import("./db");
+    if (dbSource === "neon") {
+      const sql = await getSql();
+      const rows = await sql<{
+        id: string;
+        name: string;
+        description: string;
+        unit_amount_cents: number;
+        stripe_price_id: string;
+        addon: number | boolean;
+        active: number | boolean;
+        sort_order: number;
+      }>`select * from catalog_products where id = ${id} limit 1`;
+      const row = rows[0];
+      if (row) {
+        return {
+          id: row.id,
+          name: row.name,
+          description: row.description,
+          unitAmountCents: Number(row.unit_amount_cents) || 0,
+          stripePriceId: row.stripe_price_id ?? "",
+          addon: Boolean(row.addon),
+          active: Boolean(row.active),
+          sortOrder: Number(row.sort_order) || 0,
+        };
+      }
     }
   } catch {
     /* fall through */

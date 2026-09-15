@@ -250,7 +250,7 @@ function AdminDesk() {
         active: true,
       });
       refreshLists();
-      setStatus("Product saved and linked to Stripe checkout.");
+      setStatus("Product saved on Stripe. Checkout uses that Dashboard price.");
     } catch (err) {
       setStatus(err instanceof Error ? err.message : "Could not save product.");
     } finally {
@@ -388,9 +388,8 @@ function AdminDesk() {
         <form onSubmit={saveProduct} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <h2 className="text-2xl">Stripe products</h2>
           <p className="text-sm text-muted">
-            Add products in the Stripe Dashboard, copy the Price ID (`price_…`), and paste it here.
-            Checkout then uses that Stripe product so you can change price or name in Stripe without
-            touching code. If Price ID is empty, Stripe charges the USD amount below.
+            Products live in Stripe. Save here to create or update them in your Dashboard. You can
+            also create the product in Stripe, copy `price_…`, and paste it below.
           </p>
           <ul className="space-y-2 text-sm">
             {products.map((product) => (
