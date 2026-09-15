@@ -64,8 +64,12 @@ async function readProducts(): Promise<CatalogProduct[]> {
     const { listStripeCatalog } = await import("./stripe-catalog.server");
     const fromStripe = await listStripeCatalog(true);
     if (fromStripe.length) {
-      const hasPrimary = fromStripe.some((p) => !p.addon);
-      return hasPrimary ? fromStripe : [...SEED_PRODUCTS.filter((p) => !p.addon), ...fromStripe];
+      const hasAllAccess = fromStripe.some(
+        (p) => p.id === "all-access" || /all access/i.test(p.name),
+      );
+      return hasAllAccess
+        ? fromStripe
+        : [...SEED_PRODUCTS.filter((p) => p.id === "all-access"), ...fromStripe];
     }
   } catch {
     /* Stripe key missing or API error */

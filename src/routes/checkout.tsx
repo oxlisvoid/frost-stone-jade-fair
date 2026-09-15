@@ -7,7 +7,6 @@ import { loadCatalog } from "@/lib/catalog-fns";
 import { createCheckoutSession } from "@/lib/checkout-fn";
 import { formatUsd } from "@/lib/content";
 import { INCLUDED, SITE } from "@/lib/site";
-import { useSiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
@@ -19,31 +18,35 @@ function CheckoutPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [accepted, setAccepted] = useState(false);
-  const [qty, setQty] = useState(1);
-  const [addons, setAddons] = useState<Record<string, boolean>>({});
   const [catalog, setCatalog] = useState<CatalogProduct[]>(SEED_PRODUCTS);
-
-  const { content } = useSiteContent();
-  const price = formatUsd(content.priceCents);
-  const primary = catalog.find((p) => !p.addon) ?? catalog[0];
-  const extras = catalog.filter((p) => p.addon && p.active);
+  const [picked, setPicked] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     void loadCatalog()
       .then((rows) => {
-        if (rows.length) setCatalog(rows);
+        const live = rows.length ? rows : SEED_PRODUCTS;
+        setCatalog(live);
+        const next: Record<string, boolean> = {};
+        for (const product of live) next[product.id] = !product.addon;
+        if (!Object.values(next).some(Boolean) && live[0]) next[live[0].id] = true;
+        setPicked(next);
       })
       .catch(() => undefined);
   }, []);
 
-  const items = useMemo(() => {
-    if (!primary) return [];
-    const next = [{ productId: primary.id, quantity: qty }];
-    for (const extra of extras) {
-      if (addons[extra.id]) next.push({ productId: extra.id, quantity: 1 });
-    }
-    return next;
-  }, [addons, extras, primary, qty]);
+  const selected = useMemo(
+    () => catalog.filter((product) => picked[product.id]),
+    [catalog, picked],
+  );
+  const totalCents = selected.reduce((sum, product) => sum + product.unitAmountCents, 0);
+
+  const toggle = (id: string) => {
+    setPicked((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      if (!Object.values(next).some(Boolean)) return prev;
+      return next;
+    });
+  };
 
   const pay = async (event: FormEvent) => {
     event.preventDefault();
@@ -56,11 +59,19 @@ function CheckoutPage() {
       setError("Name and the delivery email are required.");
       return;
     }
+    if (!selected.length) {
+      setError("Pick at least one product.");
+      return;
+    }
     setBusy(true);
     try {
       const session = await createCheckoutSession({
         data: {
-          items,
+          items: selected.map((product) => ({
+            productId: product.id,
+            quantity: 1,
+            priceId: product.stripePriceId || undefined,
+          })),
           email: email.trim(),
           name: name.trim(),
           origin: window.location.origin,
@@ -74,24 +85,16 @@ function CheckoutPage() {
     }
   };
 
-  if (!primary) {
-    return (
-      <SiteShell>
-        <main className="mx-auto max-w-lg px-4 py-20 text-muted">No products are for sale yet.</main>
-      </SiteShell>
-    );
-  }
-
   return (
     <SiteShell>
-      <main className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.9fr]">
+      <main className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.95fr]">
         <div>
-          <p className="text-sm font-medium text-accent">All Access · Stripe Checkout</p>
-          <h1 className="mt-2 text-4xl tracking-tight">{content.headline}</h1>
+          <p className="text-sm font-medium text-accent">Stripe Checkout</p>
+          <h1 className="mt-2 text-4xl tracking-tight">Pick the tools. Pay on Stripe.</h1>
           <p className="mt-3 text-muted">
-            Use the email where you want the toolkit. After Stripe confirms payment we send the real
-            workflows, tutorials, and files within 24 hours. The course and toolkit here are demos.
-            Card fields live on Stripe.
+            Every product below comes from the Stripe Dashboard — add more there or in the desk and
+            they show up here. Enter the email that should receive the files. Card details stay on
+            Stripe.
           </p>
           <ul className="mt-6 space-y-2 text-sm text-muted">
             {INCLUDED.map((item) => (
@@ -101,8 +104,35 @@ function CheckoutPage() {
         </div>
 
         <form onSubmit={pay} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
-          <p className="text-sm text-muted">Lifetime · one payment</p>
-          <p className="font-display text-4xl">{price}</p>
+          <p className="text-sm text-muted">Products</p>
+          <ul className="space-y-2">
+            {catalog.map((product) => {
+              const on = Boolean(picked[product.id]);
+              return (
+                <li key={product.id}>
+                  <button
+                    type="button"
+                    onClick={() => toggle(product.id)}
+                    className={`flex w-full items-start justify-between gap-3 rounded-2xl px-4 py-3 text-left shadow-(--shadow-card) ${
+                      on ? "bg-ink text-paper" : "bg-paper"
+                    }`}
+                  >
+                    <span>
+                      <span className="block text-sm font-medium">{product.name}</span>
+                      {product.description ? (
+                        <span className={`mt-0.5 block text-xs ${on ? "text-paper/70" : "text-muted"}`}>
+                          {product.description}
+                        </span>
+                      ) : null}
+                    </span>
+                    <span className="shrink-0 text-sm font-medium">{formatUsd(product.unitAmountCents)}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <p className="font-display text-4xl">{formatUsd(totalCents || 0)}</p>
 
           <label className="block text-sm">
             <span className="mb-1.5 block text-muted">Name</span>
@@ -130,32 +160,6 @@ function CheckoutPage() {
             </span>
           </label>
 
-          <label className="flex items-center justify-between gap-3 text-sm">
-            <span className="text-muted">Quantity · {primary.name}</span>
-            <input
-              type="number"
-              min={1}
-              max={5}
-              value={qty}
-              onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
-              className="h-11 w-20 rounded-lg bg-paper px-3 text-center shadow-(--shadow-card)"
-            />
-          </label>
-
-          {extras.map((extra) => (
-            <label key={extra.id} className="flex items-start gap-3 text-sm text-muted">
-              <input
-                type="checkbox"
-                className="mt-1 size-4"
-                checked={Boolean(addons[extra.id])}
-                onChange={(e) => setAddons((prev) => ({ ...prev, [extra.id]: e.target.checked }))}
-              />
-              <span>
-                Add {extra.name} ({formatUsd(extra.unitAmountCents)})
-              </span>
-            </label>
-          ))}
-
           <label className="flex items-start gap-3 text-sm text-muted">
             <input
               type="checkbox"
@@ -173,13 +177,13 @@ function CheckoutPage() {
               <Link to="/legal" hash="refund" className="text-fg underline">
                 Refund Policy
               </Link>
-              . Digital All Access is not refundable after the files are emailed.
+              . Digital goods are not refundable after the files are emailed.
             </span>
           </label>
 
           {error ? <p className="rounded-lg bg-chip px-3 py-2 text-sm text-accent">{error}</p> : null}
 
-          <Button type="submit" className="w-full" size="lg" disabled={busy || !accepted}>
+          <Button type="submit" className="w-full" size="lg" disabled={busy || !accepted || !selected.length}>
             {busy ? "Sending you to Stripe…" : `Pay with Stripe · ${SITE.currency}`}
           </Button>
         </form>
