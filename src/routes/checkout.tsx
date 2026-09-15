@@ -26,10 +26,7 @@ function CheckoutPage() {
       .then((rows) => {
         const live = rows.length ? rows : SEED_PRODUCTS;
         setCatalog(live);
-        const next: Record<string, boolean> = {};
-        for (const product of live) next[product.id] = !product.addon;
-        if (!Object.values(next).some(Boolean) && live[0]) next[live[0].id] = true;
-        setPicked(next);
+        setPicked({});
       })
       .catch(() => undefined);
   }, []);
@@ -41,11 +38,7 @@ function CheckoutPage() {
   const totalCents = selected.reduce((sum, product) => sum + product.unitAmountCents, 0);
 
   const toggle = (id: string) => {
-    setPicked((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      if (!Object.values(next).some(Boolean)) return prev;
-      return next;
-    });
+    setPicked((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const pay = async (event: FormEvent) => {
