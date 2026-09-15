@@ -39,21 +39,53 @@ export function snapshotRuntimeEnv() {
   g.__oxlisEnv = { ...(g.process?.env ?? {}) };
 }
 
-const SECRET_NAMES = ["STRIPE_SECRET_KEY", "STRIPE_API_KEY", "STRIPE_SECRET"] as const;
+function looksLikeSecret(value: string) {
+  return /^(sk_test_|sk_live_|rk_test_|rk_live_)[a-zA-Z0-9]{8,}$/.test(value);
+}
+
+const SECRET_NAMES = [
+  "REAL_STRIPE_SECRET_KEY",
+  "STRIPE_SECRET_KEY",
+  "STRIPE_API_KEY",
+  "STRIPE_SECRET",
+] as const;
 
 export function readStripeSecretFromEnv() {
   for (const name of SECRET_NAMES) {
     const value = runtimeEnv(name);
-    if (value.startsWith("sk_") || value.startsWith("rk_")) return value;
+    if (looksLikeSecret(value)) return value;
+  }
+  for (const [key, raw] of Object.entries(processEnv())) {
+    if (!raw || !/stripe/i.test(key) || /publishable|pk_/i.test(key)) continue;
+    const value = raw.trim().replace(/^['"]|['"]$/g, "");
+    if (looksLikeSecret(value)) return value;
+  }
+  return "";
+}
+
+const PRICE_NAMES = [
+  "REAL_STRIPE_PRICE_ID",
+  "STRIPE_PRICE_ALL_ACCESS",
+  "STRIPE_PRICE_ID",
+  "PRICE_ID",
+] as const;
+
+export function readStripePriceFromEnv() {
+  for (const name of PRICE_NAMES) {
+    const value = runtimeEnv(name);
+    if (value.startsWith("price_")) return value;
   }
   return "";
 }
 
 export function stripeEnvFlags() {
+  const secret = readStripeSecretFromEnv();
   return {
     STRIPE_SECRET_KEY: Boolean(runtimeEnv("STRIPE_SECRET_KEY")),
+    REAL_STRIPE_SECRET_KEY: Boolean(runtimeEnv("REAL_STRIPE_SECRET_KEY")),
     STRIPE_API_KEY: Boolean(runtimeEnv("STRIPE_API_KEY")),
     STRIPE_SECRET: Boolean(runtimeEnv("STRIPE_SECRET")),
+    hasSecret: Boolean(secret),
     DATABASE_URL: Boolean(runtimeEnv("DATABASE_URL")),
     DOMAIN: Boolean(runtimeEnv("DOMAIN") || runtimeEnv("VERCEL_URL")),
   };

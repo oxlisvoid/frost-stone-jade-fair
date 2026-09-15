@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { mergeContent } from "./content";
 import { SEED_PRODUCTS, type CatalogProduct } from "./catalog";
-import { readStripeSecretFromEnv, runtimeEnv, stripeEnvFlags } from "./runtime-env.server";
+import { readStripePriceFromEnv, readStripeSecretFromEnv, runtimeEnv, stripeEnvFlags } from "./runtime-env.server";
 
 type EnvBag = { __oxlisStripeSecret?: string };
 
@@ -69,7 +69,7 @@ async function requireSecret() {
   if (!key) {
     const flags = stripeEnvFlags();
     throw new Error(
-      `Stripe secret key is not set. In Vercel → Settings → Environment Variables add STRIPE_SECRET_KEY (sk_test_…) for Production and Preview, then Redeploy. Seen on this server: STRIPE_SECRET_KEY=${flags.STRIPE_SECRET_KEY ? "yes" : "no"} DATABASE_URL=${flags.DATABASE_URL ? "yes" : "no"}. Pasting in the desk only sticks when DATABASE_URL is set.`,
+      `Stripe secret key is not set. This server looks for REAL_STRIPE_SECRET_KEY or STRIPE_SECRET_KEY. Seen: REAL_STRIPE_SECRET_KEY=${flags.REAL_STRIPE_SECRET_KEY ? "yes" : "no"} STRIPE_SECRET_KEY=${flags.STRIPE_SECRET_KEY ? "yes" : "no"}. Redeploy after saving the env var.`,
     );
   }
   return key;
@@ -150,7 +150,10 @@ async function lineItemFor(
   if (!product || !product.active) throw new Error("Unknown product");
 
   const fromItem = item.priceId?.trim() ?? "";
-  const mapped = fromItem || product.stripePriceId.trim() || runtimeEnv(product.id === "all-access" ? "STRIPE_PRICE_ALL_ACCESS" : "");
+  const mapped =
+    fromItem ||
+    product.stripePriceId.trim() ||
+    (product.id === "all-access" ? readStripePriceFromEnv() : "");
   if (mapped) {
     if (!mapped.startsWith("price_")) {
       throw new Error("Unknown Stripe price. Use a Price ID from the Stripe Dashboard.");
