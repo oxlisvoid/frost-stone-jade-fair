@@ -11,15 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CanceledRouteImport } from './routes/canceled'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CourseRouteImport } from './routes/course'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as OpsVx9kRouteImport } from './routes/ops-vx9k'
 import { Route as PromptRouteImport } from './routes/prompt'
+import { Route as SuccessRouteImport } from './routes/success'
 import { Route as ToolkitRouteImport } from './routes/toolkit'
+import { Route as ApiCreateCheckoutSessionRouteImport } from './routes/api/create-checkout-session'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -32,9 +35,9 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const CanceledRoute = CanceledRouteImport.update({
+  id: '/canceled',
+  path: '/canceled',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -67,9 +70,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsVx9kRoute = OpsVx9kRouteImport.update({
+  id: '/ops-vx9k',
+  path: '/ops-vx9k',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PromptRoute = PromptRouteImport.update({
   id: '/prompt',
   path: '/prompt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuccessRoute = SuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolkitRoute = ToolkitRouteImport.update({
@@ -77,6 +90,12 @@ const ToolkitRoute = ToolkitRouteImport.update({
   path: '/toolkit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCreateCheckoutSessionRoute =
+  ApiCreateCheckoutSessionRouteImport.update({
+    id: '/api/create-checkout-session',
+    path: '/api/create-checkout-session',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -86,44 +105,53 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/canceled': typeof CanceledRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
   '/faq': typeof FaqRoute
   '/legal': typeof LegalRoute
   '/login': typeof LoginRoute
+  '/ops-vx9k': typeof OpsVx9kRoute
   '/prompt': typeof PromptRoute
+  '/success': typeof SuccessRoute
   '/toolkit': typeof ToolkitRoute
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/canceled': typeof CanceledRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
   '/faq': typeof FaqRoute
   '/legal': typeof LegalRoute
   '/login': typeof LoginRoute
+  '/ops-vx9k': typeof OpsVx9kRoute
   '/prompt': typeof PromptRoute
+  '/success': typeof SuccessRoute
   '/toolkit': typeof ToolkitRoute
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/canceled': typeof CanceledRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
   '/faq': typeof FaqRoute
   '/legal': typeof LegalRoute
   '/login': typeof LoginRoute
+  '/ops-vx9k': typeof OpsVx9kRoute
   '/prompt': typeof PromptRoute
+  '/success': typeof SuccessRoute
   '/toolkit': typeof ToolkitRoute
+  '/api/create-checkout-session': typeof ApiCreateCheckoutSessionRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
@@ -131,58 +159,70 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/admin'
+    | '/canceled'
     | '/checkout'
     | '/contact'
     | '/course'
     | '/faq'
     | '/legal'
     | '/login'
+    | '/ops-vx9k'
     | '/prompt'
+    | '/success'
     | '/toolkit'
+    | '/api/create-checkout-session'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/admin'
+    | '/canceled'
     | '/checkout'
     | '/contact'
     | '/course'
     | '/faq'
     | '/legal'
     | '/login'
+    | '/ops-vx9k'
     | '/prompt'
+    | '/success'
     | '/toolkit'
+    | '/api/create-checkout-session'
     | '/api/auth/$'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/admin'
+    | '/canceled'
     | '/checkout'
     | '/contact'
     | '/course'
     | '/faq'
     | '/legal'
     | '/login'
+    | '/ops-vx9k'
     | '/prompt'
+    | '/success'
     | '/toolkit'
+    | '/api/create-checkout-session'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  CanceledRoute: typeof CanceledRoute
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   CourseRoute: typeof CourseRoute
   FaqRoute: typeof FaqRoute
   LegalRoute: typeof LegalRoute
   LoginRoute: typeof LoginRoute
+  OpsVx9kRoute: typeof OpsVx9kRoute
   PromptRoute: typeof PromptRoute
+  SuccessRoute: typeof SuccessRoute
   ToolkitRoute: typeof ToolkitRoute
+  ApiCreateCheckoutSessionRoute: typeof ApiCreateCheckoutSessionRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -202,11 +242,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/canceled': {
+      id: '/canceled'
+      path: '/canceled'
+      fullPath: '/canceled'
+      preLoaderRoute: typeof CanceledRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -251,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ops-vx9k': {
+      id: '/ops-vx9k'
+      path: '/ops-vx9k'
+      fullPath: '/ops-vx9k'
+      preLoaderRoute: typeof OpsVx9kRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prompt': {
       id: '/prompt'
       path: '/prompt'
@@ -258,11 +305,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromptRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/success': {
+      id: '/success'
+      path: '/success'
+      fullPath: '/success'
+      preLoaderRoute: typeof SuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/toolkit': {
       id: '/toolkit'
       path: '/toolkit'
       fullPath: '/toolkit'
       preLoaderRoute: typeof ToolkitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/create-checkout-session': {
+      id: '/api/create-checkout-session'
+      path: '/api/create-checkout-session'
+      fullPath: '/api/create-checkout-session'
+      preLoaderRoute: typeof ApiCreateCheckoutSessionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -278,15 +339,18 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  CanceledRoute: CanceledRoute,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   CourseRoute: CourseRoute,
   FaqRoute: FaqRoute,
   LegalRoute: LegalRoute,
   LoginRoute: LoginRoute,
+  OpsVx9kRoute: OpsVx9kRoute,
   PromptRoute: PromptRoute,
+  SuccessRoute: SuccessRoute,
   ToolkitRoute: ToolkitRoute,
+  ApiCreateCheckoutSessionRoute: ApiCreateCheckoutSessionRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
