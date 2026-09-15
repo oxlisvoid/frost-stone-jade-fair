@@ -28,10 +28,7 @@ export const loadCheckoutSession = createServerFn({ method: "GET" })
     return retrieveCheckoutSession(data.sessionId);
   });
 
-export const loadStripePublishableKey = createServerFn({ method: "GET" }).handler(async () => {
-  return (
-    process.env.VITE_STRIPE_PUBLISHABLE_KEY?.trim() ||
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.trim() ||
-    ""
-  );
+export const loadOrders = createServerFn({ method: "GET" }).handler(async () => {
+  const { loadPaidOrders } = await import("./stripe-webhooks.server");
+  return loadPaidOrders();
 });

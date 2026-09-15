@@ -21,6 +21,7 @@ import {
   saveSiteContent,
   saveStripeSecret,
 } from "@/lib/content-fns";
+import { loadOrders } from "@/lib/checkout-fn";
 import { INBOX, loadInquiries, type Inquiry } from "@/lib/mail-fns";
 import { useSiteContent } from "@/lib/site-content";
 
@@ -133,6 +134,16 @@ function AdminDesk() {
   const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [posts, setPosts] = useState<SitePost[]>([]);
   const [mail, setMail] = useState<Inquiry[]>([]);
+  const [orders, setOrders] = useState<
+    Array<{
+      sessionId: string;
+      email: string;
+      paymentStatus: string;
+      amountTotal: number;
+      products: string;
+      createdAt: string;
+    }>
+  >([]);
   const [productForm, setProductForm] = useState({
     id: "",
     name: "",
@@ -160,6 +171,9 @@ function AdminDesk() {
       .catch(() => undefined);
     void loadInquiries()
       .then(setMail)
+      .catch(() => undefined);
+    void loadOrders()
+      .then(setOrders)
       .catch(() => undefined);
   };
 
@@ -326,6 +340,32 @@ function AdminDesk() {
           )}
         </section>
 
+        <section className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
+          <h2 className="text-2xl">Stripe orders</h2>
+          <p className="text-sm text-muted">
+            Paid checkouts land here after Stripe confirms. Reply to the buyer email with the toolkit.
+          </p>
+          {orders.length === 0 ? (
+            <p className="text-sm text-muted">No paid orders yet.</p>
+          ) : (
+            <ul className="space-y-3">
+              {orders.map((order) => (
+                <li key={order.sessionId} className="rounded-2xl bg-paper p-4 shadow-(--shadow-card)">
+                  <p className="text-sm font-medium">
+                    <a className="text-accent underline" href={`mailto:${order.email}`}>
+                      {order.email || "no email"}
+                    </a>{" "}
+                    · {formatUsd(order.amountTotal)} · {order.paymentStatus}
+                  </p>
+                  <p className="mt-1 text-xs text-subtle">
+                    {order.products || "All Access"} · {order.createdAt}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
         <form onSubmit={saveKey} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <h2 className="text-2xl">Stripe</h2>
           <p className="text-sm text-muted">
@@ -348,8 +388,9 @@ function AdminDesk() {
         <form onSubmit={saveProduct} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <h2 className="text-2xl">Stripe products</h2>
           <p className="text-sm text-muted">
-            Add or edit products sold on checkout. Optional Stripe Price ID (price_…) from the Dashboard. Empty Price ID
-            charges the amount below with Stripe price_data.
+            Add products in the Stripe Dashboard, copy the Price ID (`price_…`), and paste it here.
+            Checkout then uses that Stripe product so you can change price or name in Stripe without
+            touching code. If Price ID is empty, Stripe charges the USD amount below.
           </p>
           <ul className="space-y-2 text-sm">
             {products.map((product) => (
@@ -405,7 +446,7 @@ function AdminDesk() {
             onChange={(dollars) => setProductForm({ ...productForm, dollars })}
           />
           <Field
-            label="Stripe Price ID (optional)"
+            label="Stripe Price ID from Dashboard"
             value={productForm.stripePriceId}
             onChange={(stripePriceId) => setProductForm({ ...productForm, stripePriceId })}
             placeholder="price_…"

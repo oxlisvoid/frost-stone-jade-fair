@@ -192,10 +192,11 @@ export async function createStripeCheckout(input: {
   }
 
   const stripe = await getStripe();
-  const session = await stripe.checkout.sessions.create({
+  const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
     line_items,
     customer_email: email,
+    billing_address_collection: "auto",
     metadata: {
       name: input.name ?? "",
       products: input.items.map((i) => i.productId).join(","),
@@ -208,7 +209,17 @@ export async function createStripeCheckout(input: {
     },
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/canceled`,
-  });
+  };
+
+  let session: Stripe.Checkout.Session;
+  try {
+    session = await stripe.checkout.sessions.create({
+      ...params,
+      automatic_tax: { enabled: true },
+    });
+  } catch {
+    session = await stripe.checkout.sessions.create(params);
+  }
 
   if (!session.id || !session.url) {
     throw new Error("Stripe did not return a checkout URL");
