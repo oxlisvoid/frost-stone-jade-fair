@@ -5,6 +5,7 @@ import { Faq } from "@/components/landing/faq";
 import { GpuCheck } from "@/components/landing/gpu-check";
 import { Hero } from "@/components/landing/hero";
 import { Included } from "@/components/landing/included";
+import { MailboxSection } from "@/components/landing/mailbox-section";
 import { Playbooks } from "@/components/landing/playbooks";
 import { Pricing } from "@/components/landing/pricing";
 import { Proof } from "@/components/landing/proof";
@@ -30,6 +31,7 @@ function Home() {
         <Included />
         <Care />
         <Pricing />
+        <MailboxSection />
         <Faq />
       </main>
     </SiteShell>

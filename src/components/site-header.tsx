@@ -15,6 +15,7 @@ const LINKS = [
   { to: "/toolkit", hash: undefined, label: "Toolkit demo" },
   { to: "/prompt", hash: undefined, label: "VoidPrompt" },
   { to: "/", hash: "pricing", label: "Pricing" },
+  { to: "/contact", hash: undefined, label: "Mailbox" },
 ] as const;
 
 export function SiteHeader() {

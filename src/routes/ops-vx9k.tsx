@@ -21,6 +21,7 @@ import {
   saveSiteContent,
   saveStripeSecret,
 } from "@/lib/content-fns";
+import { INBOX, loadInquiries, type Inquiry } from "@/lib/mail-fns";
 import { useSiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/ops-vx9k")({
@@ -131,6 +132,7 @@ function AdminDesk() {
   const [stripeReady, setStripeReady] = useState(false);
   const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [posts, setPosts] = useState<SitePost[]>([]);
+  const [mail, setMail] = useState<Inquiry[]>([]);
   const [productForm, setProductForm] = useState({
     id: "",
     name: "",
@@ -155,6 +157,9 @@ function AdminDesk() {
       .catch(() => undefined);
     void loadAllPosts()
       .then(setPosts)
+      .catch(() => undefined);
+    void loadInquiries()
+      .then(setMail)
       .catch(() => undefined);
   };
 
@@ -291,6 +296,35 @@ function AdminDesk() {
             Sign out
           </Button>
         </div>
+
+        <section className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
+          <h2 className="text-2xl">Mailbox</h2>
+          <p className="text-sm text-muted">
+            Visitor questions. Gmail copy goes to {INBOX}. Reply to the email on each card — that is
+            their address.
+          </p>
+          {mail.length === 0 ? (
+            <p className="text-sm text-muted">No messages yet.</p>
+          ) : (
+            <ul className="space-y-3">
+              {mail.map((item) => (
+                <li key={item.id} className="rounded-2xl bg-paper p-4 shadow-(--shadow-card)">
+                  <p className="text-sm font-medium">
+                    {item.name}{" "}
+                    <a className="text-accent underline" href={`mailto:${item.email}`}>
+                      {item.email}
+                    </a>
+                  </p>
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-muted">{item.message}</p>
+                  <p className="mt-2 text-xs text-subtle">
+                    {item.createdAt}
+                    {item.mailed ? " · forwarded to Gmail" : " · saved here (confirm FormSubmit in Gmail once)"}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
         <form onSubmit={saveKey} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <h2 className="text-2xl">Stripe</h2>

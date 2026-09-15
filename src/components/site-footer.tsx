@@ -55,8 +55,8 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link to="/checkout" className="hover:text-muted">
-                All Access
+              <Link to="/contact" className="hover:text-muted">
+                Mailbox
               </Link>
             </li>
           </ul>
