@@ -32,7 +32,8 @@ export function Mailbox({ compact = false }: { compact?: boolean }) {
         <h2 className="mt-2 text-2xl">We have your email</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted">
           Your question is in the OxlisVoid inbox ({INBOX}) together with {email}. We reply to that
-          address. Check spam if you do not see us within a day.
+          address. Check spam. The first message may send a one-time confirm link to {INBOX} — open
+          that once so later questions arrive automatically.
         </p>
       </div>
     );
