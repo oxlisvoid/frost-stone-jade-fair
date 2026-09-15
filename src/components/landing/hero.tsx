@@ -12,14 +12,14 @@ export function Hero() {
   return (
     <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
       <div>
-        <p className="mb-3 text-sm font-medium text-accent">Standing price · not a timer</p>
+        <p className="mb-3 text-sm font-medium text-accent">Stop paying for credits and monthly subscriptions</p>
         <h1 className="text-4xl leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl">
-          All the tools. {price}. Yours.
+          Own the tools. {price}. Forever.
         </h1>
         <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted">
-          Run AI influencers with the full OxlisVoid stack — image, video, motion, LoRA, course —
-          and sell with those models on TikTok, Instagram, and fan platforms. One payment. Lifetime.
-          The pack is emailed within 24 hours. This site shows demos only.
+          No credit meters. No monthly AI rent. One payment for the full OxlisVoid stack — image,
+          video, motion, LoRA, course — so you can run AI influencers and sell on TikTok, Instagram,
+          and fan platforms. The pack is emailed within 24 hours. This site shows demos only.
         </p>
 
         <p className="mt-7 text-sm font-medium">You will learn how to:</p>
@@ -40,7 +40,7 @@ export function Hero() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link to="/course">Watch the course demo</Link>
+            <Link to="/course">Read the course outline</Link>
           </Button>
         </div>
 

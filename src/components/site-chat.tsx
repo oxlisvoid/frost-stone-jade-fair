@@ -13,19 +13,22 @@ const STARTER: Msg[] = [
   },
 ];
 
-function replyFor(input: string, price: string) {
+function replyFor(input: string, price: string, email: string) {
   const q = input.toLowerCase();
   if (/(email|deliver|receive|send|24|hour|tool)/.test(q)) {
     return "Put the email you actually check at checkout — that is where the toolkit is sent. After Stripe confirms payment, our team emails the workflows, tutorials, playbooks, and prompt libraries within 24 hours. Check spam if it is not in the inbox.";
   }
   if (/(demo|course|watch|unlock|download|zip)/.test(q)) {
-    return "Watch the course and browse the toolkit as a demo before you pay. They are previews, not the full pack. The real graphs and files never sit as a public ZIP. They arrive by email after payment is confirmed.";
+    return "Read the course outline and browse the toolkit as a demo before you pay. They are previews, not the full pack. The real graphs and files never sit as a public ZIP. They arrive by email after payment is confirmed.";
+  }
+  if (/(credit|subscri|monthly|rent)/.test(q)) {
+    return `Stop paying for credits and monthly subscriptions. All Access is ${price}, one time, lifetime updates. No meter. No rent.`;
   }
   if (/(price|cost|pay|stripe|refund)/.test(q)) {
-    return `All Access is ${price}, one time, lifetime updates, no subscription. Stripe hosts the card form — this site never sees the number. Digital goods are not refundable after the files are emailed.`;
+    return `All Access is ${price}, one time, lifetime updates, no subscription and no credits. Stripe hosts the card form — this site never sees the number. Digital goods are not refundable after the files are emailed.`;
   }
   if (/(discord|group|community|staff|support|help|human)/.test(q)) {
-    return "We look after buyers. More than 30 people are online to help you install ComfyUI, train a LoRA, and get the result you paid for. Use this chat, email hello@oxlisvoid.com, or the Discord / group links in the footer after you publish them from the desk.";
+    return `We look after buyers. More than 30 people are online to help you install ComfyUI, train a LoRA, and get the result you paid for. Use this chat, email ${email}, or the Discord / group links in the footer.`;
   }
   if (/(tiktok|instagram|sell|product|monet)/.test(q)) {
     return "The system is built to create AI models you can post and sell with — TikTok, Instagram, fan platforms, brand deals. You get two growth playbooks (TikTok + Instagram) plus the image, video, and motion workflows.";
@@ -53,7 +56,11 @@ export function SiteChat() {
   const send = (value: string) => {
     const cleaned = value.trim();
     if (!cleaned) return;
-    setMsgs((prev) => [...prev, { from: "you", text: cleaned }, { from: "bot", text: replyFor(cleaned, price) }]);
+    setMsgs((prev) => [
+      ...prev,
+      { from: "you", text: cleaned },
+      { from: "bot", text: replyFor(cleaned, price, content.email) },
+    ]);
     setText("");
   };
 

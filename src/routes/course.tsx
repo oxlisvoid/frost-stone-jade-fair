@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Lock, Play } from "lucide-react";
-import { LoopVideo } from "@/components/loop-video";
 import { SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
-import { useAccess } from "@/lib/access";
 import { COURSE, OFFER } from "@/lib/site";
 
 export const Route = createFileRoute("/course")({ component: CoursePage });
 
 function CoursePage() {
-  const unlocked = useAccess((s) => s.unlocked);
-  const hydrate = useAccess((s) => s.hydrate);
   const [active, setActive] = useState<(typeof COURSE)[number]["id"]>(COURSE[0].id);
-
-  useEffect(() => {
-    hydrate();
-  }, [hydrate]);
-
   const lesson = COURSE.find((item) => item.id === active) ?? COURSE[0];
-  const locked = !unlocked && lesson.id !== "welcome" && lesson.id !== "character";
 
   return (
     <SiteShell>
@@ -32,9 +21,8 @@ function CoursePage() {
           </Button>
         </div>
         <p className="mt-3 max-w-2xl text-muted">
-          This is a demonstration of the lesson list. Welcome and character are open. The real
-          course files are emailed within 24 hours after Stripe confirms payment — they are not a
-          public ZIP on this site.
+          Lesson titles and what each one covers. No videos here — this is the outline. The real
+          course files are emailed within 24 hours after Stripe confirms payment.
         </p>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
@@ -50,37 +38,17 @@ function CoursePage() {
               >
                 <span className="w-7 tabular-nums text-subtle">{String(i + 1).padStart(2, "0")}</span>
                 <span className="flex-1 truncate">{item.title}</span>
-                {!unlocked && item.id !== "welcome" && item.id !== "character" ? (
-                  <Lock className="size-3.5 opacity-60" />
-                ) : (
-                  <Play className="size-3.5 opacity-60" />
-                )}
               </button>
             ))}
           </aside>
 
-          <section className="rounded-3xl bg-surface p-4 shadow-(--shadow-card) sm:p-6">
+          <section className="rounded-3xl bg-surface p-6 shadow-(--shadow-card) sm:p-8">
             <p className="text-xs font-medium tracking-wide text-subtle uppercase">{lesson.time}</p>
             <h2 className="mt-1 text-2xl">{lesson.title}</h2>
-            <p className="mt-2 text-sm text-muted">{lesson.body}</p>
-            <div className="relative mt-5 overflow-hidden rounded-2xl bg-ink">
-              {locked ? (
-                <div className="flex aspect-video flex-col items-center justify-center p-6 text-center text-paper">
-                  <Lock className="size-7 text-paper/70" />
-                  <p className="mt-3 text-sm text-paper/80">This lesson unlocks with All Access.</p>
-                  <Button asChild variant="accent" className="mt-4">
-                    <Link to="/checkout">Pay {OFFER.priceLabel}</Link>
-                  </Button>
-                </div>
-              ) : (
-                <LoopVideo
-                  src={lesson.src}
-                  poster={lesson.poster}
-                  className="aspect-video"
-                  label={lesson.title}
-                />
-              )}
-            </div>
+            <p className="mt-4 text-[16px] leading-relaxed text-muted">{lesson.body}</p>
+            <Button asChild className="mt-8">
+              <Link to="/checkout">Get the full course by email</Link>
+            </Button>
           </section>
         </div>
       </main>

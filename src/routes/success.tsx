@@ -63,7 +63,7 @@ function SuccessPage() {
             </p>
             <p className="mt-3 text-sm text-muted">
               Check spam and promotions. More than 30 people are online if you need a hand —
-              reply to the delivery email or write hello@oxlisvoid.com.
+              reply to the delivery email or write oxlisvoid1@gmail.com.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button asChild>

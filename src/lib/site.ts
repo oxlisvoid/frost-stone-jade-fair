@@ -1,10 +1,10 @@
 export const SITE = {
   name: "OxlisVoid",
-  tagline: "Own the stack. Run AI influencers without a monthly rent.",
+  tagline: "Stop paying for credits and monthly subscriptions. Own the stack.",
   price: 59.9,
   comparePrice: 1050,
   currency: "USD",
-  email: "hello@oxlisvoid.com",
+  email: "oxlisvoid1@gmail.com",
 } as const;
 
 export const PAYMENT = {

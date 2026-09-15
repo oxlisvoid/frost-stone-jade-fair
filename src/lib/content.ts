@@ -32,8 +32,8 @@ export type SiteContent = {
 
 export const DEFAULT_CONTENT: SiteContent = {
   discordUrl: "",
-  email: "hello@oxlisvoid.com",
-  tagline: "Own the stack. Run AI influencers without a monthly rent.",
+  email: "oxlisvoid1@gmail.com",
+  tagline: "Stop paying for credits and monthly subscriptions. Own the stack.",
   headline: "Every tool. One payment. No expiry on this price.",
   sells:
     "Create AI models you can post and sell with on TikTok, Instagram, and fan platforms. Demos on this site. The real pack is emailed within 24 hours of payment.",
