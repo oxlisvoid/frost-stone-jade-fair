@@ -1,57 +1,34 @@
 export const SITE = {
   name: "OxlisVoid",
-  tagline: "Stop paying for credits and monthly subscriptions. Own the stack.",
-  price: 59.9,
-  comparePrice: 1050,
+  instagram: "https://instagram.com/oxlisvoid",
+  instagramHandle: "@oxlisvoid",
+  tagline: "The step-by-step system to launch AI models and sell content without showing your face.",
+  price: 9.99,
+  comparePrice: 97,
   currency: "USD",
   email: "oxlisvoid1@gmail.com",
 } as const;
 
 export const PAYMENT = {
-  /** Hosted Checkout — Price IDs come from Vercel env, not Payment Links. */
   successPath: "/success",
   cancelPath: "/canceled",
 } as const;
 
 export const OFFER = {
-  name: "All Access",
-  priceLabel: "$59.90",
-  headline: "Every tool. One payment. No expiry on this price.",
+  name: "OxlisVoid System",
+  priceLabel: "$9.99",
+  compareLabel: "$97",
+  headline: "Build an AI model business without showing your face.",
   sells:
-    "Image, video, motion, LoRA, skin, swap, inpaint, VoidPrompt, tutorials, and the course demo. The real pack is emailed within 24 hours of payment.",
+    "Creation, posting, and monetization in one pack. Demos on this site. The real system is emailed within 24 hours of Stripe payment.",
 } as const;
 
 export const KITS = [
-  {
-    id: "image",
-    name: "Image Kit",
-    price: 97,
-    sells: "Tools and workflows to generate AI images. Model files. No limits.",
-  },
-  {
-    id: "video",
-    name: "Video Kit",
-    price: 235,
-    sells: "Tools and workflows to generate AI video. Model files. No limits.",
-  },
-  {
-    id: "motion",
-    name: "Motion Kit",
-    price: 300,
-    sells: "Video with real motion — the body copies the reference. Motion workflows. No limits.",
-  },
-  {
-    id: "total",
-    name: "Total Kit",
-    price: 500,
-    sells: "Image + Video + Motion. Start-from-zero support. Online course.",
-  },
-  {
-    id: "mentorship",
-    name: "Mentorship",
-    price: 1050,
-    sells: "Everything in Total Kit + course + 1 meeting with the team.",
-  },
+  { id: "image", name: "Image Kit", price: 97, sells: "Consistent character stills." },
+  { id: "video", name: "Video Kit", price: 235, sells: "AI video workflows." },
+  { id: "motion", name: "Motion Kit", price: 300, sells: "Motion-controlled clips." },
+  { id: "total", name: "Total Kit", price: 500, sells: "Image + video + motion." },
+  { id: "mentorship", name: "Mentorship", price: 1050, sells: "Full stack plus a call." },
 ] as const;
 
 export const ADDON = {
@@ -62,11 +39,12 @@ export const ADDON = {
 } as const;
 
 export const INCLUDED = [
-  "7 plug-and-play ComfyUI workflows",
+  "Character creation system (face, body, identity lock)",
+  "7 plug-and-play image + video workflows",
   "13 step-by-step tutorials",
-  "2 social growth playbooks (TikTok + Instagram)",
-  "Prompt libraries and helpful tools",
-  "Lifetime updates — free forever",
+  "TikTok + Instagram growth playbooks",
+  "Fan-page monetization structure",
+  "Prompt libraries and lifetime updates",
   "Emailed within 24 hours of payment",
 ] as const;
 
@@ -77,12 +55,12 @@ export const NOT_SOLD = [
 ] as const;
 
 export const LEARN = [
-  "Create realistic AI faces and avatars",
-  "Build consistent characters with local workflows",
-  "Use ComfyUI without random tutorial-hopping",
-  "Train LoRA characters for repeatable results",
-  "Enhance skin textures and overall quality",
-  "Use the prompts, settings, and SOPs behind the system",
+  "Create a consistent AI girl from scratch",
+  "Keep the same face across photos and clips",
+  "Turn Reels and TikToks into traffic",
+  "Build a profile that converts visits into buyers",
+  "Place your link without burning the account",
+  "Package private content people actually pay for",
 ] as const;
 
 export const WORKFLOWS = [
@@ -116,7 +94,7 @@ export const COURSE = [
     id: "welcome",
     title: "Welcome to OxlisVoid",
     time: "01:58",
-    body: "The system in one pass: character lock, stills, motion, publish. Watch this before you touch a node.",
+    body: "The system in one pass: character lock, stills, motion, publish.",
     src: "/media/v-studio.mp4",
     poster: "/media/p-studio.jpg",
   },
@@ -124,7 +102,7 @@ export const COURSE = [
     id: "install",
     title: "How to install ComfyUI",
     time: "01:23",
-    body: "Local install or a fresh GPU pod. We keep the graph portable so the same file runs on both.",
+    body: "Local install or a fresh GPU pod.",
     src: "/media/v-indoor.mp4",
     poster: "/media/p-indoor.jpg",
   },
@@ -132,7 +110,7 @@ export const COURSE = [
     id: "basics",
     title: "ComfyUI basics",
     time: "17:56",
-    body: "Nodes, queues, seeds, samplers. This is the longest lesson — everything later assumes this vocabulary.",
+    body: "Nodes, queues, seeds, samplers.",
     src: "/media/v-indoor.mp4",
     poster: "/media/p-office.jpg",
   },
@@ -140,7 +118,7 @@ export const COURSE = [
     id: "character",
     title: "Generating your character",
     time: "05:12",
-    body: "Lock identity before you scale content. Reference stills, prompt structure, tight seed range.",
+    body: "Lock identity before you scale content.",
     src: "/media/v-cafe.mp4",
     poster: "/media/p-cafe.jpg",
   },
@@ -148,7 +126,7 @@ export const COURSE = [
     id: "dataset",
     title: "Generating a dataset",
     time: "05:11",
-    body: "Framing, angles, captions. Dataset quality decides LoRA quality.",
+    body: "Framing, angles, captions.",
     src: "/media/v-rooftop.mp4",
     poster: "/media/p-rooftop.jpg",
   },
@@ -156,7 +134,7 @@ export const COURSE = [
     id: "lora",
     title: "Training a LoRA",
     time: "03:08",
-    body: "Production settings. Conservative steps, preview, stop before overfit.",
+    body: "Production settings. Stop before overfit.",
     src: "/media/v-beach.mp4",
     poster: "/media/p-beach.jpg",
   },
@@ -164,7 +142,7 @@ export const COURSE = [
     id: "images",
     title: "Generating images",
     time: "08:31",
-    body: "From character sheet to finished stills that survive a social crop.",
+    body: "From character sheet to social-ready stills.",
     src: "/media/v-studio.mp4",
     poster: "/media/p-studio.jpg",
   },
@@ -172,7 +150,7 @@ export const COURSE = [
     id: "editing",
     title: "Editing images",
     time: "07:12",
-    body: "Inpaint, restyle and skin-enhance without destroying identity.",
+    body: "Inpaint and skin-enhance without breaking identity.",
     src: "/media/v-skin-after.mp4",
     poster: "/media/skin-after.jpg",
   },
@@ -180,7 +158,7 @@ export const COURSE = [
     id: "motion",
     title: "Motion control",
     time: "06:46",
-    body: "Drive video from a still plus a motion reference. Keep the first pass modest.",
+    body: "Drive video from a still plus a motion reference.",
     src: "/media/v-motion.mp4",
     poster: "/media/p-night.jpg",
   },
@@ -188,7 +166,7 @@ export const COURSE = [
     id: "krea",
     title: "Generating images (Krea2)",
     time: "06:32",
-    body: "Current Krea2 stack. Faster iteration, cleaner skin, tighter prompt adherence.",
+    body: "Faster iteration, cleaner skin, tighter prompts.",
     src: "/media/v-night.mp4",
     poster: "/media/p-night.jpg",
   },
@@ -196,7 +174,7 @@ export const COURSE = [
     id: "sops",
     title: "Social media growth SOPs",
     time: "written",
-    body: "Cadence, hooks, carousel structure for TikTok and Instagram.",
+    body: "Cadence, hooks, carousel structure.",
     src: "/media/v-man.mp4",
     poster: "/media/p-man.jpg",
   },
@@ -204,7 +182,7 @@ export const COURSE = [
     id: "prompts",
     title: "Prompt guide",
     time: "written",
-    body: "Subject, style, lens, framing, mood — the skeleton VoidPrompt emits.",
+    body: "Subject, style, lens, framing, mood.",
     src: "/media/v-cafe.mp4",
     poster: "/media/p-cafe.jpg",
   },
@@ -213,39 +191,35 @@ export const COURSE = [
 export const FAQ = [
   {
     q: "When do I receive the tools?",
-    a: "The toolkit and course on this website are demos. After Stripe confirms payment we email the real workflows, tutorials, playbooks, and prompt libraries to the address you enter at checkout — within 24 hours. Check spam if you do not see it.",
+    a: "After Stripe confirms payment we email the workflows, tutorials, playbooks, and prompt libraries to the address you enter at checkout — within 24 hours. Check spam if you do not see it.",
   },
   {
     q: "Why do you need my email?",
-    a: "That is the inbox that receives the pack. Use an address you actually check. Stripe also sends the receipt there.",
+    a: "That is the inbox that receives the pack. Stripe also sends the receipt there.",
   },
   {
-    q: "Is $59.90 a limited flash sale?",
-    a: "No. This is the standing All Access price for unlimited time. No countdown, no fake timer, no subscription.",
+    q: "Is $9.99 a subscription?",
+    a: "No. One-time payment. Lifetime access and lifetime tool updates. No monthly fee.",
   },
   {
     q: "What if I get stuck?",
-    a: "We take care of our clients. More than 30 people are online to help you install, train a LoRA, and ship content. Write in with a screenshot.",
+    a: "Write oxlisvoid1@gmail.com or DM @oxlisvoid on Instagram with a screenshot. We help with install, first character, and first posts.",
   },
   {
     q: "Can I sell with the models I create?",
-    a: "Yes. The system is built so you can create AI models and sell products with them on TikTok, Instagram, fan platforms, and brand deals. The two growth playbooks cover launch and scaling.",
+    a: "Yes. The system is built so you can create AI models and sell with them on TikTok, Instagram, and fan platforms.",
   },
   {
     q: "Do I need a powerful computer?",
-    a: "No. Every purchase includes the OxlisVoid server if your PC is weak. Most people generate on a cloud GPU anyway. Mac works.",
+    a: "No. Most people generate on a cloud GPU. Mac works. Weak PCs are covered.",
   },
   {
     q: "How do you take payment?",
-    a: "Stripe hosted checkout. Card numbers never touch this website. The toolkit is emailed after the charge clears. After delivery, the sale is final.",
-  },
-  {
-    q: "Are there any subscriptions?",
-    a: "No. Pay once. Lifetime access and lifetime tool updates. No monthly payment.",
+    a: "Existing Stripe checkout on this site. Card numbers never touch the landing page.",
   },
   {
     q: "Do I need coding experience?",
-    a: "No. Everything is explained step by step and designed for beginners who have never opened ComfyUI.",
+    a: "No. Step by step. Built for people who have never opened ComfyUI.",
   },
 ] as const;
 

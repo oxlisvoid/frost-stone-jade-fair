@@ -33,12 +33,12 @@ export type SiteContent = {
 export const DEFAULT_CONTENT: SiteContent = {
   discordUrl: "",
   email: "oxlisvoid1@gmail.com",
-  tagline: "Stop paying for credits and monthly subscriptions. Own the stack.",
-  headline: "Every tool. One payment. No expiry on this price.",
+  tagline: "The step-by-step system to launch AI models without showing your face.",
+  headline: "Build an AI model business. $9.99. One payment.",
   sells:
     "Create AI models you can post and sell with on TikTok, Instagram, and fan platforms. Demos on this site. The real pack is emailed within 24 hours of payment.",
-  priceCents: 5990,
-  comparePriceCents: 105000,
+  priceCents: 999,
+  comparePriceCents: 9700,
   heroClips: [
     { src: "/media/v-cafe.mp4", poster: "/media/p-cafe.jpg", label: "Cafe character" },
     { src: "/media/v-studio.mp4", poster: "/media/p-studio.jpg", label: "Studio character" },
@@ -92,14 +92,8 @@ export function mergeContent(raw: unknown): SiteContent {
     headline:
       typeof data.headline === "string" && data.headline.trim() ? data.headline : DEFAULT_CONTENT.headline,
     sells: typeof data.sells === "string" && data.sells.trim() ? data.sells : DEFAULT_CONTENT.sells,
-    priceCents:
-      typeof data.priceCents === "number" && data.priceCents > 0
-        ? Math.round(data.priceCents)
-        : DEFAULT_CONTENT.priceCents,
-    comparePriceCents:
-      typeof data.comparePriceCents === "number" && data.comparePriceCents > 0
-        ? Math.round(data.comparePriceCents)
-        : DEFAULT_CONTENT.comparePriceCents,
+    priceCents: DEFAULT_CONTENT.priceCents,
+    comparePriceCents: DEFAULT_CONTENT.comparePriceCents,
     heroClips: padList(data.heroClips, DEFAULT_CONTENT.heroClips, 4),
     portraits: padList(data.portraits, DEFAULT_CONTENT.portraits, 5),
     examples: padList(data.examples, DEFAULT_CONTENT.examples, 3),
