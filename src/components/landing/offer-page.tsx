@@ -6,11 +6,11 @@ const IG = "https://instagram.com/oxlisvoid";
 
 const CLIPS = [
   { src: "/media/ref-balcony.mp4", poster: "/media/ref-balcony.jpg" },
+  { src: "/media/ref-car.mp4", poster: "/media/ref-car.jpg" },
   { src: "/media/ref-dress.mp4", poster: "/media/ref-dress.jpg" },
   { src: "/media/ref-lights.mp4", poster: "/media/ref-lights.jpg" },
   { src: "/media/ref-indoor.mp4", poster: "/media/ref-indoor.jpg" },
   { src: "/media/v-studio.mp4", poster: "/media/p-studio.jpg" },
-  { src: "/media/v-night.mp4", poster: "/media/p-night.jpg" },
 ];
 
 function Buy({ label, full = false }: { label: string; full?: boolean }) {
