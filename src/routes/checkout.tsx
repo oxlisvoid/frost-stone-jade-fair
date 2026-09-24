@@ -172,45 +172,32 @@ function CheckoutPage() {
           </p>
         </form>
 
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold">The packs, in one line</h2>
-          <ul className="mt-3 divide-y divide-black/10 border-y border-black/10 text-sm">
-            {[
-              ["Pack 01 · Ad Face", "15 short ads. Same face. Product in the first second."],
-              ["Pack 02 · One Model", "One character. Stills and vertical clips. Same face in every file."],
-              ["Pack 03 · Monthly Drop", "New photos and clips of that character, every month."],
-              ["Pack 04 · One Job", "Only the step you are stuck on. The face, or the product."],
-              ["Pack 05 · 14 Days", "Two calls. We look at what you posted."],
-            ].map(([name, line]) => (
-              <li key={name} className="py-2.5">
-                <p className="font-medium">{name}</p>
-                <p className="text-muted">{line}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-3 grid grid-cols-5 gap-2">
-            {[
-              ["/media/packs/ad.jpg", "Ad"],
-              ["/media/packs/model.jpg", "Model"],
-              ["/media/packs/month.jpg", "Month"],
-              ["/media/packs/job.jpg", "Job"],
-              ["/media/packs/call.jpg", "Call"],
-            ].map(([src, label]) => (
-              <figure key={label}>
-                <img src={src} alt="" className="aspect-square w-full rounded-lg object-cover" />
-                <figcaption className="mt-1 text-center text-[10px] text-muted">{label}</figcaption>
-              </figure>
-            ))}
-          </div>
+        <section className="mt-8 space-y-4">
+          <h2 className="text-lg font-semibold">What you can add</h2>
+          {[
+            ["/media/packs/tools.jpg", "Pack 01 · Tools", "Everything to build your own model: the tools, the prompts, and a short manual that shows you how to use them."],
+            ["/media/packs/niches.jpg", "Pack 02 · Your model", "We build the model for the job you pick. Influencer. Product seller. Comedian."],
+            ["/media/packs/month.jpg", "Pack 03 · Monthly posts", "New posts every month for the niche you choose, ready for your social accounts."],
+            ["/media/packs/reseller.jpg", "Pack 04 · Your store", "We make your site and the tools to sell. Daily sales checklist, ad creatives, help setting up your Meta ads, and a course in your name and your company name."],
+            ["/media/packs/mentor.jpg", "Pack 05 · 14 days", "All the content, two models, a website, and the tools to sell or to build your model. Plus a call with one of us, so you can ask and learn the steps."],
+          ].map(([src, title, line]) => (
+            <article key={title} className="overflow-hidden rounded-2xl bg-surface shadow-(--shadow-card)">
+              <img src={src} alt="" className="aspect-video w-full object-cover" />
+              <div className="p-4">
+                <h3 className="font-semibold">{title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{line}</p>
+              </div>
+            </article>
+          ))}
+          <a
+            href="mailto:oxlisvoid@gmail.com?subject=Authorized%20OxlisVoid%20reseller"
+            className="block rounded-2xl bg-[#07080b] px-4 py-5 text-[#f4f1ea]"
+          >
+            <p className="text-xs tracking-[0.16em] text-[#d6ff4a] uppercase">Pack 06</p>
+            <p className="mt-1 text-xl font-semibold">Be an authorized reseller</p>
+            <p className="mt-2 text-sm leading-relaxed text-white/70">Email oxlisvoid@gmail.com. Sell our content and keep up to 80% of each sale.</p>
+          </a>
         </section>
-
-        <a
-          href="mailto:oxlisvoid@gmail.com?subject=I%20want%20to%20be%20an%20OxlisVoid%20reseller"
-          className="mt-6 block rounded-2xl bg-[#07080b] px-4 py-4 text-[#f4f1ea]"
-        >
-          <p className="text-base font-semibold text-[#d6ff4a]">I want to be an OxlisVoid reseller</p>
-          <p className="mt-1 text-sm text-white/70">Ask for the sales panel. You sell the packs. We deliver the files. You don’t make them.</p>
-        </a>
       </main>
     </SiteShell>
   );
