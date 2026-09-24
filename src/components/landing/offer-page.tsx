@@ -168,6 +168,51 @@ export function OfferPage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <div className="rounded-[32px] border border-white/10 bg-[#101114] p-6 sm:p-10">
+          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">The part people skip</p>
+          <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">You do not need more proof. You need a next step.</h2>
+          <p className="mt-4 max-w-2xl text-white/65">
+            Most people on this page already agree. A face, a product, one line. They leave anyway, and tomorrow the profile is still empty. Ten dollars is not the decision. Opening the email is.
+          </p>
+          <div className="mt-8 grid gap-3 md:grid-cols-2">
+            <div className="rounded-[24px] border border-white/10 p-5">
+              <p className="text-xs tracking-[0.16em] text-white/40 uppercase">Close the page</p>
+              <p className="mt-3 text-2xl font-semibold">Same phone. Same blank profile.</p>
+              <ul className="mt-4 space-y-2 text-sm text-white/60">
+                <li>You still do not have a character that stays the same.</li>
+                <li>You still post portraits with nothing in her hand.</li>
+                <li>The $9.99 price is the part that goes away.</li>
+              </ul>
+            </div>
+            <div className="rounded-[24px] bg-[#d6ff4a] p-5 text-black">
+              <p className="text-xs tracking-[0.16em] uppercase opacity-60">Pay once</p>
+              <p className="mt-3 text-2xl font-semibold">The kit is in your email in under 8 hours.</p>
+              <ul className="mt-4 space-y-2 text-sm">
+                <li>Create the model. Put the product in frame.</li>
+                <li>Post on TikTok and Instagram. Then ask for sponsors.</li>
+                <li>Hate it? Email us within 30 days. You get the $9.99 back.</li>
+              </ul>
+              <div className="mt-6">
+                <Buy label={`Get access now · ${PRICE}`} full dark />
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {[
+              ["I will do it later", "Later is how the $97 price comes back. The lessons do not get easier next month."],
+              ["I do not know AI", "The first step assumes you do not. If you can use a phone, you can follow it."],
+              ["What if it is useless", "Then it cost you nothing. Stripe takes the card. We refund from the receipt."],
+            ].map(([q, a]) => (
+              <div key={q} className="rounded-2xl border border-white/10 px-4 py-4">
+                <p className="font-medium">{q}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/55">{a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-8">
         {CLIPS.map((c) => (
           <div key={c.src} className="w-36 shrink-0 overflow-hidden rounded-2xl border border-white/10">
