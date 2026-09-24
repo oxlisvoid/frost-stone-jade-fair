@@ -171,6 +171,32 @@ export function OfferPage() {
         ))}
       </div>
 
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">The look</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Characters in this range.</h2>
+          </div>
+          <p className="hidden max-w-xs text-right text-sm text-white/45 sm:block">Made for the page. Not buyers. Not a result.</p>
+        </div>
+        <div className="mt-6 grid grid-cols-3 gap-2">
+          {[
+            ["/media/gen/roof.mp4", "/media/gen/roof.jpg"],
+            ["/media/gen/night.mp4", "/media/gen/night.jpg"],
+            ["/media/gen/palm.mp4", "/media/gen/palm.jpg"],
+          ].map(([src, poster]) => (
+            <div key={src} className="overflow-hidden rounded-[24px] border border-white/10">
+              <Phone src={src} poster={poster} tall />
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 grid grid-cols-4 gap-2">
+          {["/media/gen/roof.jpg", "/media/gen/cafe.jpg", "/media/gen/night.jpg", "/media/gen/palm.jpg"].map((src) => (
+            <img key={src} src={src} alt="Example character still" className="aspect-[2/3] w-full rounded-2xl object-cover" />
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-[1fr_1fr]">
         <div>
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">The hard part is not the work. It is the order.</h2>
