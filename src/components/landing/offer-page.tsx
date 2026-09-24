@@ -135,7 +135,7 @@ const NOTES = [
   {
     who: "New account",
     when: "May 19",
-    text: "I already have 2,000 followers on the new account. Facebook is around 2,300. Earnings on the page: $135.84 all time, $130.84 this month.",
+    text: "I already have 2,000 followers on the new account. Facebook is around 2,300.",
   },
   {
     who: "Restart",
@@ -245,7 +245,6 @@ export function OfferPage() {
           {[
             ["/media/proof/fan-2456.webp", "Fan spent $2,456.27"],
             ["/media/proof/fan-1890.webp", "Fan spent $1,890.58"],
-            ["/media/proof/earnings.webp", "New account, $130.84 this month"],
             ["/media/proof/reels.webp", "Reels going up"],
             ["/media/proof/andres.webp", "Andrés, day one"],
             ["/media/proof/week.webp", "Week one"],
@@ -289,30 +288,13 @@ export function OfferPage() {
           />
         </div>
 
-        <div className="mt-4 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
-          <article className="rounded-[28px] border border-white/10 bg-[#121316] p-5">
-            <p className="text-xs text-white/40">Earnings screen · May 19</p>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <div className="rounded-2xl bg-black p-4">
-                <p className="text-[11px] text-white/40">All time</p>
-                <p className="mt-2 text-3xl font-semibold text-[#7dffb3]">$135.84</p>
-              </div>
-              <div className="rounded-2xl bg-black p-4">
-                <p className="text-[11px] text-white/40">This month</p>
-                <p className="mt-2 text-3xl font-semibold">$130.84</p>
-                <p className="text-[11px] text-white/40">May 2026</p>
-              </div>
-            </div>
-            <p className="mt-4 text-sm leading-relaxed text-white/70">“I already have 2000 followers on the new account. Facebook is around 2300.”</p>
-          </article>
-          <div className="grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {NOTES.map((n) => (
               <blockquote key={n.text} className="rounded-[24px] border border-white/10 bg-white/[0.03] p-4">
                 <p className="text-[11px] tracking-wide text-[#d6ff4a] uppercase">{n.who} · {n.when}</p>
                 <p className="mt-2 text-sm leading-relaxed text-white/80">{n.text}</p>
               </blockquote>
             ))}
-          </div>
         </div>
       </section>
 
