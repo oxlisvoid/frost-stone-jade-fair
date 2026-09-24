@@ -69,6 +69,7 @@ const FAQ = [
   ["Can I buy a finished character later?", "Yes. After the kit, write us if you want a ready character, a monthly model update, a TikTok character, a product character, or a character for your brand."],
   ["Do I show my face?", "No. The character is on camera. You are not."],
   ["Do you promise I will get rich?", "No. Other pages promise millionaire months. We do not. People who follow the steps get a working character and a way to post and charge. How far that goes depends on you. It is not a promise of income."],
+  ["Is my card safe?", "Yes. Payment is processed by Stripe on their checkout page. We do not see or store your card number, expiry date, or security code. Stripe handles that data."],
   ["How does the refund work?", "Access is lifetime. The 30 days are only the refund. Email oxlisvoid1@gmail.com within 30 days of payment, from the same address, with the Stripe receipt."],
 ];
 
@@ -131,7 +132,7 @@ export function OfferPage() {
             </div>
             <Buy label="Get access now" />
           </div>
-          <p className="mt-4 max-w-md text-sm text-white/45">The files arrive by email in under 8 hours. The 30 days you will see below are only the refund window, not how long the kit lasts.</p>
+          <p className="mt-4 max-w-md text-sm text-white/45">The files arrive by email in under 8 hours. Payment is processed by Stripe. We never store your card number, expiry, or security code.</p>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {[
@@ -275,7 +276,7 @@ export function OfferPage() {
           <div className="mt-6">
             <Buy label="Get access now" full dark />
           </div>
-          <p className="mt-4 text-sm leading-relaxed">Files in under 8 hours. Fifteen days of questions included. The refund window is 30 days, and it does not limit how long you keep the kit.</p>
+          <p className="mt-4 text-sm leading-relaxed">Paid on Stripe. We do not save your card. Files in under 8 hours. Fifteen days of questions included.</p>
         </aside>
       </section>
 

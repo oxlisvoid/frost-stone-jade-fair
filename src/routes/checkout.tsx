@@ -179,6 +179,9 @@ function CheckoutPage() {
           <Button type="submit" className="w-full" size="lg" disabled={busy || !accepted || !selected.length}>
             {busy ? "Sending you to Stripe…" : `Pay with Stripe · ${SITE.currency}`}
           </Button>
+          <p className="text-center text-xs text-muted">
+            Stripe processes the payment. We never store your card number, expiry, or security code.
+          </p>
         </form>
       </main>
     </SiteShell>
