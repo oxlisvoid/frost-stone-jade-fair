@@ -100,6 +100,7 @@ function Phone({ src, poster, tall = false }: { src: string; poster: string; tal
 
 export function OfferPage() {
   const [open, setOpen] = useState(0);
+  const [playing, setPlaying] = useState(false);
 
   return (
     <div className="bg-[#07080b] text-[#f4f1ea]">
@@ -115,37 +116,41 @@ export function OfferPage() {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-6xl items-end gap-10 px-4 pt-14 pb-10 lg:grid-cols-[1.15fr_0.85fr]">
-        <div>
-          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">The post that gets watched · product in her hand</p>
-          <h1 className="mt-4 text-[44px] leading-[0.92] font-semibold tracking-[-0.045em] sm:text-7xl">
-            She shows the product.<br />You stay off camera.
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-            A pretty portrait does not sell. The posts that move are a face, a product, and one line, in the first second. Skincare, shoes, scent, coffee. Same character every time. From your phone.
-          </p>
-          <div className="mt-8 flex flex-wrap items-end gap-6">
-            <div>
-              <p className="text-sm text-white/40 line-through">$97</p>
-              <p className="text-6xl font-semibold tracking-tight">{PRICE}</p>
-              <p className="text-sm text-white/55">about ten dollars · once · lifetime access</p>
-            </div>
-            <Buy label="Get access now" />
-          </div>
-          <p className="mt-4 max-w-md text-sm text-white/45">The files arrive by email in under 8 hours. Payment is processed by Stripe. We never store your card number, expiry, or security code.</p>
+      <section className="mx-auto max-w-3xl px-4 pt-8 pb-6 text-center">
+        <p className="mx-auto inline-flex rounded-full border border-[#d6ff4a]/40 bg-[#d6ff4a]/10 px-4 py-2 text-sm font-medium text-[#d6ff4a]">
+          This $9.99 lifetime price is up for a short time. The kit does not expire.
+        </p>
+        <h1 className="mt-6 text-[40px] leading-[0.95] font-semibold tracking-[-0.04em] sm:text-6xl">
+          The step-by-step system to launch an AI model from your phone.
+        </h1>
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/65">
+          She shows the product. You stay off camera. Create the character, post it, and ask for sponsors. No PC. No GPU.
+        </p>
+        <button
+          type="button"
+          className="relative mx-auto mt-8 block w-full overflow-hidden rounded-[28px] border border-white/10"
+          onClick={() => setPlaying(true)}
+        >
+          {playing ? (
+            <video src="/media/ugc/serum.mp4" poster="/media/ugc/serum.jpg" autoPlay controls playsInline className="aspect-video w-full object-cover" />
+          ) : (
+            <>
+              <img src="/media/ugc/serum.jpg" alt="Product post, ready to play" className="aspect-video w-full object-cover" />
+              <span className="absolute inset-0 bg-black/35" />
+              <span className="absolute top-1/2 left-1/2 grid size-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#d6ff4a] text-3xl text-black">▶</span>
+              <span className="absolute inset-x-0 bottom-5 text-sm font-semibold tracking-[0.18em]">TAP TO PLAY</span>
+            </>
+          )}
+        </button>
+        <div className="mt-6">
+          <Buy label={`Get access now for just ${PRICE}`} full />
         </div>
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            ["/media/ugc/serum.mp4", "/media/ugc/serum.jpg", "I finished the bottle"],
-            ["/media/ugc/shoes.mp4", "/media/ugc/shoes.jpg", "Worth it, or just cute"],
-            ["/media/ugc/scent.mp4", "/media/ugc/scent.jpg", "The one I repurchase"],
-          ].map(([src, poster, hook]) => (
-            <div key={src} className="relative overflow-hidden rounded-[24px] border border-white/10">
-              <Phone src={src} poster={poster} tall />
-              <p className="absolute inset-x-2 bottom-3 rounded-xl bg-black/70 px-2 py-1.5 text-center text-[11px] leading-tight font-medium sm:text-xs">{hook}</p>
-            </div>
-          ))}
-        </div>
+        <p className="mt-3 text-sm text-white/45">
+          <span className="line-through">$97</span> · one-time payment, no subscription
+        </p>
+        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-white/40">
+          Paid on Stripe. We never store your card. Files by email in under 8 hours.
+        </p>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-6">
