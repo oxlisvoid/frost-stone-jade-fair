@@ -117,12 +117,12 @@ export function OfferPage() {
 
       <section className="mx-auto grid max-w-6xl items-end gap-10 px-4 pt-14 pb-10 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
-          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">Lifetime access · limited-time price · phone only</p>
+          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">The post that gets watched · product in her hand</p>
           <h1 className="mt-4 text-[44px] leading-[0.92] font-semibold tracking-[-0.045em] sm:text-7xl">
-            Build an AI character.<br />Post her. Charge for it.<br />Stay off camera.
+            She shows the product.<br />You stay off camera.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-            A numbered method to create the character, get her watched, and open a page fans can pay. No coding. No PC. No graphics card.
+            A pretty portrait does not sell. The posts that move are a face, a product, and one line, in the first second. Skincare, shoes, scent, coffee. Same character every time. From your phone.
           </p>
           <div className="mt-8 flex flex-wrap items-end gap-6">
             <div>
@@ -135,9 +135,14 @@ export function OfferPage() {
           <p className="mt-4 max-w-md text-sm text-white/45">The files arrive by email in under 8 hours. The 30 days you will see below are only the refund window, not how long the kit lasts.</p>
         </div>
         <div className="grid grid-cols-3 gap-2">
-          {CLIPS.slice(0, 3).map((c) => (
-            <div key={c.src} className="overflow-hidden rounded-[24px] border border-white/10">
-              <Phone src={c.src} poster={c.poster} tall />
+          {[
+            ["/media/ugc/serum.mp4", "/media/ugc/serum.jpg", "I finished the bottle"],
+            ["/media/ugc/shoes.mp4", "/media/ugc/shoes.jpg", "Worth it, or just cute"],
+            ["/media/ugc/scent.mp4", "/media/ugc/scent.jpg", "The one I repurchase"],
+          ].map(([src, poster, hook]) => (
+            <div key={src} className="relative overflow-hidden rounded-[24px] border border-white/10">
+              <Phone src={src} poster={poster} tall />
+              <p className="absolute inset-x-2 bottom-3 rounded-xl bg-black/70 px-2 py-1.5 text-center text-[11px] leading-tight font-medium sm:text-xs">{hook}</p>
             </div>
           ))}
         </div>
@@ -172,27 +177,35 @@ export function OfferPage() {
       </div>
 
       <section className="mx-auto max-w-6xl px-4 py-6">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">The look</p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Characters in this range.</h2>
-          </div>
-          <p className="hidden max-w-xs text-right text-sm text-white/45 sm:block">Made for the page. Not buyers. Not a result.</p>
+        <div className="max-w-2xl">
+          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">What actually gets watched</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">Product in frame. Face in frame. One sentence.</h2>
+          <p className="mt-3 text-white/60">A portrait with no object is a scroll. The review is the post: she holds the thing, she says why, the caption does the rest. These are examples of that frame, not buyer results.</p>
         </div>
-        <div className="mt-6 grid grid-cols-3 gap-2">
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
           {[
-            ["/media/gen/roof.mp4", "/media/gen/roof.jpg"],
-            ["/media/gen/night.mp4", "/media/gen/night.jpg"],
-            ["/media/gen/palm.mp4", "/media/gen/palm.jpg"],
-          ].map(([src, poster]) => (
-            <div key={src} className="overflow-hidden rounded-[24px] border border-white/10">
-              <Phone src={src} poster={poster} tall />
-            </div>
+            ["01", "Object first", "The product is large in the first frame. If it is small, the post dies."],
+            ["02", "Same face", "One character, every product. People follow a person, not a catalog."],
+            ["03", "One line", "A hook on the screen. Not a paragraph. Not a logo wall."],
+          ].map(([n, t, d]) => (
+            <article key={n} className="rounded-[24px] border border-white/10 p-5">
+              <p className="text-xs text-white/35">{n}</p>
+              <h3 className="mt-3 text-xl font-semibold">{t}</h3>
+              <p className="mt-2 text-sm text-white/55">{d}</p>
+            </article>
           ))}
         </div>
-        <div className="mt-2 grid grid-cols-4 gap-2">
-          {["/media/gen/roof.jpg", "/media/gen/cafe.jpg", "/media/gen/night.jpg", "/media/gen/palm.jpg"].map((src) => (
-            <img key={src} src={src} alt="Example character still" className="aspect-[2/3] w-full rounded-2xl object-cover" />
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {[
+            ["/media/ugc/serum.jpg", "Skincare"],
+            ["/media/ugc/coffee.jpg", "Coffee"],
+            ["/media/ugc/shoes.jpg", "Shoes"],
+            ["/media/ugc/scent.jpg", "Scent"],
+          ].map(([src, label]) => (
+            <figure key={src} className="relative overflow-hidden rounded-2xl">
+              <img src={src} alt={`${label} review frame`} className="aspect-[9/16] w-full object-cover" />
+              <figcaption className="absolute bottom-2 left-2 rounded-full bg-black/70 px-2 py-1 text-[11px]">{label}</figcaption>
+            </figure>
           ))}
         </div>
       </section>
