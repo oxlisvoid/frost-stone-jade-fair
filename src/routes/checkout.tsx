@@ -121,21 +121,22 @@ function CheckoutPage() {
         </section>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_0.95fr]">
-          <p className="text-sm font-medium text-accent">Stripe Checkout</p>
-          <h1 className="mt-2 text-4xl tracking-tight">Pick the tools. Pay on Stripe.</h1>
-          <p className="mt-3 text-muted">
-            Every product below comes from the Stripe Dashboard — add more there or in the desk and
-            they show up here. Enter the email that should receive the files. Card details stay on
-            Stripe.
-          </p>
-          <ul className="mt-6 space-y-2 text-sm text-muted">
-            {INCLUDED.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
+          <div>
+            <p className="text-sm font-medium text-accent">Stripe Checkout</p>
+            <h1 className="mt-2 text-4xl tracking-tight">Pick the tools. Pay on Stripe.</h1>
+            <p className="mt-3 text-muted">
+              Every product below comes from the Stripe Dashboard — add more there or in the desk and
+              they show up here. Enter the email that should receive the files. Card details stay on
+              Stripe.
+            </p>
+            <ul className="mt-6 space-y-2 text-sm text-muted">
+              {INCLUDED.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
 
-        <form onSubmit={pay} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
+          <form onSubmit={pay} className="space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
           <p className="text-sm text-muted">Products</p>
           <ul className="space-y-2">
             {catalog.map((product) => {
