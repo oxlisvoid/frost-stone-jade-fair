@@ -24,24 +24,23 @@ const SHOTS = [
 ];
 
 const PHASES = [
-  ["01", "Lock the character", "Face, body, wardrobe. A look you can start from, or one you build. The next posts still look like her."],
-  ["02", "Keep her consistent", "The same person across scenes. This is where most people quit, and where the method spends its time."],
-  ["03", "Make the posts", "Photos and short video from the phone. The render is in the cloud. No graphics card."],
-  ["04", "Get watched", "Hooks, covers, and a posting rhythm for TikTok and Instagram. No audience, no sales."],
-  ["05", "Open a page that charges", "A profile people can pay. Subscription, tips, paid posts. The bio stops being a dead end."],
+  ["01", "How to create the model", "Face, body, wardrobe, and a look that stays the same from post to post. Start from zero, or from a finished character."],
+  ["02", "How to put your product in frame", "She holds the product in the first second. Skincare, shoes, scent, coffee, or whatever you sell. The object is the post."],
+  ["03", "How to get watched on TikTok", "Hooks, covers, and a posting rhythm built for the For You page. No audience, no sales."],
+  ["04", "How to get watched on Instagram", "Reels, stories, and a profile that points somewhere. Same character, native posts."],
+  ["05", "How to get sponsors", "A page a brand can understand: the character, the niche, the product posts, and how you ask."],
 ];
 
 const INCLUDED = [
+  "How to create the model",
+  "How to place your product in her posts",
+  "How to get watched on TikTok",
+  "How to get watched on Instagram",
+  "How to get sponsors",
   "Lifetime access. This price is for a limited time.",
-  "The full step-by-step system",
-  "Character build, from zero or from a finished look",
-  "Photo and video workflows",
-  "TikTok and Instagram posting method",
-  "The paid-page setup",
-  "Monthly notes when the method changes",
+  "Photo and video workflows, from your phone",
   "An online call, plus email support",
   "Fifteen days of questions included",
-  "Phone or desktop. Nothing to install locally.",
 ];
 
 const VERSUS = [
@@ -63,7 +62,7 @@ const NOTES = [
 const FAQ = [
   ["Do I need to code, or already know AI?", "No. The steps assume you are starting cold. If you can use a phone, you can follow them."],
   ["Do I need a PC or a GPU?", "No. Start from your phone. The heavy render runs in the cloud."],
-  ["What do I get for $9.99?", "Lifetime access to the system, the workflows, the posting method, and the paid-page setup. The price is lifetime for a limited time. The pack is emailed in under 8 hours after Stripe clears."],
+  ["What do I get for $9.99?", "The whole kit: how to create the model, how to put your product in frame, how to get watched on TikTok, how to get watched on Instagram, and how to get sponsors. Lifetime access, emailed in under 8 hours. Watching the lessons is not a promise that a post will go viral or that a brand will pay you."],
   ["Is this a subscription?", "No. $9.99 once. The kit does not expire. This lifetime price will not stay up forever."],
   ["How fast do I get the files, and how fast do you reply?", "The pack is delivered in under 8 hours. You can write the team any time, including to book an online call. With the current volume of orders, replies take up to 2 days."],
   ["How long can I ask questions?", "Fifteen days after you buy are included, so you can clear every question on the kit. If you want ongoing accompaniment after that, contact us."],
@@ -213,13 +212,15 @@ export function OfferPage() {
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-[1fr_1fr]">
         <div>
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">The hard part is not the work. It is the order.</h2>
-          <p className="mt-4 text-lg text-white/65">Most people stall because they start in the wrong place. The system tells you what to do first, then next.</p>
+          <p className="mt-4 text-lg text-white/65">The kit is the order. Create her, put the product in her hand, post on TikTok, post on Instagram, then ask a sponsor.</p>
         </div>
         <ul className="grid gap-3">
           {[
-            ["Create her", "Plug-in steps for a face and a body that stay the same from post to post."],
-            ["Get her seen", "The posting method for TikTok and Instagram. No audience means no sales."],
-            ["Charge", "How the page, the offer, and the replies fit together."],
+            ["Create the model", "The steps for a face that stays the same across every product."],
+            ["Place the product", "How the object sits in the first frame so the post is a review, not a portrait."],
+            ["TikTok", "The posting method for the For You page."],
+            ["Instagram", "Reels, stories, and a profile that points somewhere."],
+            ["Sponsors", "How to show a brand the character, the niche, and the posts."],
           ].map(([t, d]) => (
             <li key={t} className="rounded-2xl border border-white/10 px-5 py-4">
               <p className="font-medium">{t}</p>
@@ -239,8 +240,8 @@ export function OfferPage() {
 
       <section id="system" className="mx-auto max-w-6xl px-4 py-16">
         <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">The system</p>
-        <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">You always know the next move.</h2>
-        <p className="mt-4 max-w-2xl text-white/60">This is not a folder of tips. Each phase ends when the character, the posts, or the page is actually done.</p>
+        <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Everything in the kit.</h2>
+        <p className="mt-4 max-w-2xl text-white/60">Five parts, in order. Create the model. Place the product. TikTok. Instagram. Sponsors. This is the method. It is not a promise that every post goes viral.</p>
         <div className="mt-8 grid gap-3">
           {PHASES.map(([n, t, d]) => (
             <article key={n} className="grid gap-2 rounded-[24px] border border-white/10 px-5 py-5 sm:grid-cols-[4rem_1fr] sm:items-center">
