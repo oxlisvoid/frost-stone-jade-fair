@@ -9,14 +9,14 @@ type Msg = { from: "bot" | "you"; text: string };
 const STARTER: Msg[] = [
   {
     from: "bot",
-    text: "Hey — OxlisVoid support here. The toolkit and course on this site are demos. After Stripe confirms payment we email the real workflows, tutorials, and files to the address you enter at checkout. Delivery is within 24 hours. What do you need?",
+    text: "Hey — OxlisVoid support here. The toolkit and course on this site are demos. After Stripe confirms payment we email the real files to the address you enter at checkout, in under 8 hours. You can write any time. With the current volume, a reply can take up to 2 days. What do you need?",
   },
 ];
 
 function replyFor(input: string, price: string, email: string) {
   const q = input.toLowerCase();
   if (/(email|deliver|receive|send|24|hour|tool)/.test(q)) {
-    return "Put the email you actually check at checkout — that is where the toolkit is sent. After Stripe confirms payment, our team emails the workflows, tutorials, playbooks, and prompt libraries within 24 hours. Check spam if it is not in the inbox.";
+    return "Put the email you actually check at checkout — that is where the toolkit is sent. After Stripe confirms payment, the files go out in under 8 hours. Check spam if it is not in the inbox. Questions on the kit are included for 15 days. Replies can take up to 2 days right now.";
   }
   if (/(demo|course|watch|unlock|download|zip)/.test(q)) {
     return "Read the course outline and browse the toolkit as a demo before you pay. They are previews, not the full pack. The real graphs and files never sit as a public ZIP. They arrive by email after payment is confirmed.";
@@ -39,7 +39,7 @@ function replyFor(input: string, price: string, email: string) {
   if (/(lora|comfy|workflow|skin|face|prompt)/.test(q)) {
     return "You get 7 plug-and-play ComfyUI workflows (Krea2, motion control, LoRA dataset, skin enhance, face swap, inpaint, VoidPrompt), 13 tutorials, prompt libraries, and lifetime updates. We email the pack after payment.";
   }
-  return `All Access is ${price} lifetime. Pay on Stripe with the email that should receive the tools. We send everything within 24 hours and a 30+ person team stays online if you get stuck. Ask about delivery, the demo, TikTok/Instagram selling, or GPU setup.`;
+  return `All Access is ${price} lifetime, at a limited-time price. Pay on Stripe with the email that should receive the tools. We send the pack in under 8 hours. You can write any time, including to book a call. Replies are currently within 2 days.`;
 }
 
 export function SiteChat() {

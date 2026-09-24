@@ -59,7 +59,7 @@ function SuccessPage() {
             <p className="mt-4 text-muted">
               Stripe captured the payment{email ? ` for ${email}` : ""}. The toolkit and course on this
               site are demos. The real workflows, tutorials, playbooks, and prompt libraries are
-              emailed to that address within 24 hours.
+              emailed to that address in under 8 hours.
             </p>
             <p className="mt-3 text-sm text-muted">
               Check spam and promotions. More than 30 people are online if you need a hand —

@@ -32,13 +32,15 @@ const PHASES = [
 ];
 
 const INCLUDED = [
+  "Lifetime access. This price is for a limited time.",
   "The full step-by-step system",
   "Character build, from zero or from a finished look",
   "Photo and video workflows",
   "TikTok and Instagram posting method",
   "The paid-page setup",
-  "Updates after you buy",
-  "Help by email if you get stuck",
+  "Monthly notes when the method changes",
+  "An online call, plus email support",
+  "Fifteen days of questions included",
   "Phone or desktop. Nothing to install locally.",
 ];
 
@@ -61,11 +63,14 @@ const NOTES = [
 const FAQ = [
   ["Do I need to code, or already know AI?", "No. The steps assume you are starting cold. If you can use a phone, you can follow them."],
   ["Do I need a PC or a GPU?", "No. Start from your phone. The heavy render runs in the cloud."],
-  ["What do I get for $9.99?", "The system, the workflows, the posting method, and the paid-page setup. Files go out by email within 24 hours after Stripe clears."],
-  ["Is this a subscription?", "No. $9.99 once. About ten dollars. No second charge."],
+  ["What do I get for $9.99?", "Lifetime access to the system, the workflows, the posting method, and the paid-page setup. The price is lifetime for a limited time. The pack is emailed in under 8 hours after Stripe clears."],
+  ["Is this a subscription?", "No. $9.99 once. The kit does not expire. This lifetime price will not stay up forever."],
+  ["How fast do I get the files, and how fast do you reply?", "The pack is delivered in under 8 hours. You can write the team any time, including to book an online call. With the current volume of orders, replies take up to 2 days."],
+  ["How long can I ask questions?", "Fifteen days after you buy are included, so you can clear every question on the kit. If you want ongoing accompaniment after that, contact us."],
+  ["Can I buy a finished character later?", "Yes. After the kit, write us if you want a ready character, a monthly model update, a TikTok character, a product character, or a character for your brand."],
   ["Do I show my face?", "No. The character is on camera. You are not."],
   ["Do you promise I will get rich?", "No. Other pages promise millionaire months. We do not. People who follow the steps get a working character and a way to post and charge. How far that goes depends on you. It is not a promise of income."],
-  ["How does the refund work?", "Email oxlisvoid1@gmail.com within 30 days of payment, from the same address, with the Stripe receipt. We refund the order."],
+  ["How does the refund work?", "Access is lifetime. The 30 days are only the refund. Email oxlisvoid1@gmail.com within 30 days of payment, from the same address, with the Stripe receipt."],
 ];
 
 function Buy({ label, full = false, dark = false }: { label: string; full?: boolean; dark?: boolean }) {
@@ -112,7 +117,7 @@ export function OfferPage() {
 
       <section className="mx-auto grid max-w-6xl items-end gap-10 px-4 pt-14 pb-10 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
-          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">Step by step · phone only · one payment</p>
+          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">Lifetime access · limited-time price · phone only</p>
           <h1 className="mt-4 text-[44px] leading-[0.92] font-semibold tracking-[-0.045em] sm:text-7xl">
             Build an AI character.<br />Post her. Charge for it.<br />Stay off camera.
           </h1>
@@ -123,11 +128,11 @@ export function OfferPage() {
             <div>
               <p className="text-sm text-white/40 line-through">$97</p>
               <p className="text-6xl font-semibold tracking-tight">{PRICE}</p>
-              <p className="text-sm text-white/55">about ten dollars · once · 30-day refund</p>
+              <p className="text-sm text-white/55">about ten dollars · once · lifetime access</p>
             </div>
             <Buy label="Get access now" />
           </div>
-          <p className="mt-4 max-w-md text-sm text-white/45">Instant checkout. The files arrive by email within 24 hours.</p>
+          <p className="mt-4 max-w-md text-sm text-white/45">The files arrive by email in under 8 hours. The 30 days you will see below are only the refund window, not how long the kit lasts.</p>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {CLIPS.slice(0, 3).map((c) => (
@@ -152,8 +157,8 @@ export function OfferPage() {
           </div>
           <div>
             <p className="text-xs tracking-[0.18em] text-white/40 uppercase">What it costs to try</p>
-            <p className="mt-3 text-2xl font-semibold leading-tight">{PRICE}. Refundable.</p>
-            <p className="mt-2 text-sm leading-relaxed text-white/55">About ten dollars. If it is not for you, email us within 30 days and we send it back.</p>
+            <p className="mt-3 text-2xl font-semibold leading-tight">Lifetime. This price is temporary.</p>
+            <p className="mt-2 text-sm leading-relaxed text-white/55">The kit does not expire in 30 days. You keep it. The lifetime price is up for a limited time.</p>
           </div>
         </div>
       </section>
@@ -226,12 +231,40 @@ export function OfferPage() {
         <aside className="h-fit rounded-[28px] bg-[#d6ff4a] p-6 text-black">
           <p className="text-sm line-through opacity-60">$97</p>
           <p className="text-6xl font-semibold tracking-tight">{PRICE}</p>
-          <p className="mt-1 text-sm">About ten dollars. Once. Not a subscription.</p>
+          <p className="mt-1 text-sm">Lifetime access. One payment. This price is for a limited time.</p>
           <div className="mt-6">
             <Buy label="Get access now" full dark />
           </div>
-          <p className="mt-4 text-sm leading-relaxed">30 days to decide. Email {MAIL} and we refund the order. Worth a try at this price.</p>
+          <p className="mt-4 text-sm leading-relaxed">Files in under 8 hours. Fifteen days of questions included. The refund window is 30 days, and it does not limit how long you keep the kit.</p>
         </aside>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-8">
+        <div className="grid gap-3 lg:grid-cols-3">
+          <article className="rounded-[28px] border border-white/10 p-6 lg:col-span-2">
+            <p className="text-xs tracking-[0.18em] text-[#d6ff4a] uppercase">After you pay</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">The kit stays yours. The help has a window.</h2>
+            <ul className="mt-5 grid gap-3 text-sm text-white/70">
+              <li>The pack is emailed in under 8 hours. Check spam for {MAIL}.</li>
+              <li>You can write any time, and you can book an online call with the team.</li>
+              <li>Orders are high right now, so a reply can take up to 2 days. Delivery of the files is still under 8 hours.</li>
+              <li>For 15 days after purchase, questions about the kit are included. Ask all of them in that window.</li>
+              <li>Want someone to stay with you after those 15 days? Contact us and we will talk about accompaniment.</li>
+            </ul>
+          </article>
+          <article className="rounded-[28px] bg-[#101114] p-6">
+            <p className="text-xs tracking-[0.18em] text-white/40 uppercase">Also for sale</p>
+            <h3 className="mt-3 text-2xl font-semibold">Characters, after the kit.</h3>
+            <ul className="mt-4 space-y-2 text-sm text-white/65">
+              <li>A ready-made character</li>
+              <li>Monthly character updates</li>
+              <li>A character built for TikTok</li>
+              <li>A character for a product</li>
+              <li>A character for your brand</li>
+            </ul>
+            <p className="mt-4 text-sm text-white/50">Buy the kit first. Then write {MAIL} and tell us which one you want.</p>
+          </article>
+        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16">
@@ -262,9 +295,9 @@ export function OfferPage() {
         </div>
         <div className="rounded-[28px] border border-white/10 p-6">
           <p className="text-6xl font-semibold tracking-tight">30</p>
-          <p className="text-lg">days to change your mind</p>
+          <p className="text-lg">days to ask for a refund. Not 30 days of access.</p>
           <p className="mt-4 text-sm leading-relaxed text-white/60">
-            Get in, open the system, follow the steps. If it is not for you, for any reason, email {MAIL} within 30 days with your Stripe receipt. We refund the order. No form. No speech.
+            Access is lifetime. The 30 days are only if you want the money back. Email {MAIL} with your Stripe receipt. We refund the order.
           </p>
           <p className="mt-4 text-sm text-white/45">Please actually try it. Income is not guaranteed. Results depend on what you post and how often.</p>
         </div>
@@ -310,8 +343,8 @@ export function OfferPage() {
 
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="rounded-[32px] bg-[#d6ff4a] px-6 py-10 text-black sm:px-10">
-          <h2 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">Ten dollars. Thirty days. Your phone.</h2>
-          <p className="mt-3 max-w-xl text-black/70">No millionaire banner. A method, a refund if you do not want it, and a character that is not your face.</p>
+          <h2 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">Lifetime kit. About ten dollars. For a limited time.</h2>
+          <p className="mt-3 max-w-xl text-black/70">Files in under 8 hours. Fifteen days of questions. An online call if you need one. The character is not your face.</p>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <Buy label={`Get access now · ${PRICE}`} dark />
             <p className="text-sm">Was $97 · one payment</p>

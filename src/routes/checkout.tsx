@@ -149,7 +149,7 @@ function CheckoutPage() {
               placeholder="you@email.com"
             />
             <span className="mt-1 block text-xs text-subtle">
-              We email the pack here within 24 hours of payment. Double-check the spelling.
+              We email the pack here in under 8 hours after payment. Double-check the spelling.
             </span>
           </label>
 

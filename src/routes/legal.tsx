@@ -30,7 +30,7 @@ function LegalPage() {
               Redistributing the graphs as a competing pack is not allowed.
             </p>
             <p>
-              Payment is captured by Stripe before we email the workflows and files (within 24 hours).
+              Payment is captured by Stripe before we email the workflows and files (in under 8 hours).
               You are responsible for how you publish generated characters.
             </p>
           </div>
