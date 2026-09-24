@@ -126,22 +126,25 @@ export function OfferPage() {
         <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/65">
           She shows the product. You stay off camera. Create the character, post it, and ask for sponsors. No PC. No GPU.
         </p>
-        <button
-          type="button"
-          className="relative mx-auto mt-8 block w-full overflow-hidden rounded-[28px] border border-white/10"
-          onClick={() => setPlaying(true)}
-        >
+        <div className="mx-auto mt-8 w-full max-w-[420px] overflow-hidden rounded-[28px] border border-white/10 bg-black">
           {playing ? (
-            <video src="/media/ugc/serum.mp4" poster="/media/ugc/serum.jpg" autoPlay controls playsInline className="aspect-video w-full object-cover" />
+            <video
+              src="/media/hero-demo.mp4"
+              poster="/media/hero-demo.jpg"
+              autoPlay
+              controls
+              playsInline
+              className="aspect-[720/1272] w-full bg-black object-contain"
+            />
           ) : (
-            <>
-              <img src="/media/ugc/serum.jpg" alt="Product post, ready to play" className="aspect-video w-full object-cover" />
-              <span className="absolute inset-0 bg-black/35" />
+            <button type="button" className="relative block w-full" onClick={() => setPlaying(true)}>
+              <img src="/media/hero-demo.jpg" alt="Watch the demo" className="aspect-[720/1272] w-full bg-black object-contain" />
+              <span className="absolute inset-0 bg-black/25" />
               <span className="absolute top-1/2 left-1/2 grid size-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#d6ff4a] text-3xl text-black">▶</span>
               <span className="absolute inset-x-0 bottom-5 text-sm font-semibold tracking-[0.18em]">TAP TO PLAY</span>
-            </>
+            </button>
           )}
-        </button>
+        </div>
         <div className="mt-6">
           <Buy label={`Get access now for just ${PRICE}`} full />
         </div>
