@@ -39,17 +39,12 @@ function LegalPage() {
           <h2 className="text-4xl tracking-tight">Refund Policy</h2>
           <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
             <p>
-              After the toolkit is emailed, the sale is complete. We do not refund “changed my
-              mind” or “I already received the files.”
+              Email {SITE.email} from the checkout address within 30 days of payment, with the Stripe
+              receipt. We refund the purchase. One refund per order. Say it is not for you. That is enough.
             </p>
             <p>
-              We refund duplicate charges, corrupt files we cannot replace, or orders we
-              cannot start.
-            </p>
-            <p>
-              Email {SITE.email} from the checkout address within 7 days with the Stripe
-              receipt. Chargebacks after a completed download are contested with delivery
-              logs and this policy.
+              Duplicate charges are refunded as well. Chargebacks filed after a completed refund are contested
+              with the receipt and this policy.
             </p>
           </div>
         </section>

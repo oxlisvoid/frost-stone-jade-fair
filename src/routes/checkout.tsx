@@ -170,7 +170,7 @@ function CheckoutPage() {
               <Link to="/legal" hash="refund" className="text-fg underline">
                 Refund Policy
               </Link>
-              . Digital goods are not refundable after the files are emailed.
+              . You can email us within 30 days of payment for a refund of this order.
             </span>
           </label>
 

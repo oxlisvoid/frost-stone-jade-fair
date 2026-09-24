@@ -25,7 +25,7 @@ function replyFor(input: string, price: string, email: string) {
     return `Stop paying for credits and monthly subscriptions. All Access is ${price}, one time, lifetime updates. No meter. No rent.`;
   }
   if (/(price|cost|pay|stripe|refund)/.test(q)) {
-    return `All Access is ${price}, one time, lifetime updates, no subscription and no credits. Stripe hosts the card form — this site never sees the number. Digital goods are not refundable after the files are emailed.`;
+    return `All Access is ${price}, one time, lifetime updates, no subscription and no credits. Stripe hosts the card form — this site never sees the number. Email us within 30 days of payment for a refund.`;
   }
   if (/(discord|group|community|staff|support|help|human)/.test(q)) {
     return `We look after buyers. More than 30 people are online to help you install ComfyUI, train a LoRA, and get the result you paid for. Use this chat, email ${email}, or the Discord / group links in the footer.`;
