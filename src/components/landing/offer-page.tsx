@@ -5,12 +5,12 @@ const PRICE = "$9.99";
 const IG = "https://instagram.com/oxlisvoid";
 
 const CLIPS = [
+  { src: "/media/ref-balcony.mp4", poster: "/media/ref-balcony.jpg" },
+  { src: "/media/ref-dress.mp4", poster: "/media/ref-dress.jpg" },
+  { src: "/media/ref-lights.mp4", poster: "/media/ref-lights.jpg" },
+  { src: "/media/ref-indoor.mp4", poster: "/media/ref-indoor.jpg" },
   { src: "/media/v-studio.mp4", poster: "/media/p-studio.jpg" },
   { src: "/media/v-night.mp4", poster: "/media/p-night.jpg" },
-  { src: "/media/v-cafe.mp4", poster: "/media/p-cafe.jpg" },
-  { src: "/media/v-beach.mp4", poster: "/media/p-beach.jpg" },
-  { src: "/media/ex-selfie.mp4", poster: "/media/ex-selfie.jpg" },
-  { src: "/media/ex-motion.mp4", poster: "/media/ex-motion.jpg" },
 ];
 
 function Buy({ label, full = false }: { label: string; full?: boolean }) {
@@ -398,7 +398,7 @@ export function OfferPage() {
             <p className="mt-4 text-xs text-black/50">Digital delivery within 24 hours. After the files are sent, the sale is final.</p>
           </div>
           <div className="relative min-h-[360px] bg-black">
-            <video src="/media/v-studio.mp4" poster="/media/p-studio.jpg" autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover opacity-90" />
+            <video src="/media/ref-dress.mp4" poster="/media/ref-dress.jpg" autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover opacity-90" />
           </div>
         </div>
       </section>
