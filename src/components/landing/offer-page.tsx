@@ -129,8 +129,8 @@ export function OfferPage() {
         <div className="mx-auto mt-8 w-full max-w-[420px] overflow-hidden rounded-[28px] border border-white/10 bg-black">
           {playing ? (
             <video
-              src="/media/hero-demo.mp4"
-              poster="/media/hero-demo.jpg"
+              src="/media/hero-pitch.mp4"
+              poster="/media/hero-pitch.jpg"
               autoPlay
               controls
               playsInline
@@ -138,7 +138,7 @@ export function OfferPage() {
             />
           ) : (
             <button type="button" className="relative block w-full" onClick={() => setPlaying(true)}>
-              <img src="/media/hero-demo.jpg" alt="Watch the demo" className="aspect-[720/1272] w-full bg-black object-contain" />
+              <img src="/media/hero-pitch.jpg" alt="Watch the demo" className="aspect-[720/1272] w-full bg-black object-contain" />
               <span className="absolute inset-0 bg-black/25" />
               <span className="absolute top-1/2 left-1/2 grid size-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#d6ff4a] text-3xl text-black">▶</span>
               <span className="absolute inset-x-0 bottom-5 text-sm font-semibold tracking-[0.18em]">TAP TO PLAY</span>
@@ -154,6 +154,34 @@ export function OfferPage() {
         <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-white/40">
           Paid on Stripe. We never store your card. Files by email in under 8 hours.
         </p>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">After the kit</p>
+        <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">Six ways to go further.</h2>
+        <p className="mt-3 max-w-2xl text-white/60">The $9.99 kit is the start. These are the extras. Same offers as checkout. Pay the kit first, then write us for a pack.</p>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {[
+            ["/media/packs/tools.jpg", "Pack 01 · Tools", "Every tool to build your own model, plus the prompts and a short manual that shows you how to use them."],
+            ["/media/packs/niches.jpg", "Pack 02 · Your model", "We build the model for the job you pick. Influencer. Product seller. Comedian."],
+            ["/media/packs/month.jpg", "Pack 03 · Monthly posts", "New posts every month for the niche you choose, ready for your social accounts."],
+            ["/media/packs/reseller.jpg", "Pack 04 · Your store", "We make your site and the tools to sell. Daily sales checklist, ad creatives, help setting up your Meta ads, and a course in your name and your company name."],
+            ["/media/packs/mentor.jpg", "Pack 05 · 14 days", "All the content, two models, a website, and the tools to sell or to build your model. Plus a call with one of us."],
+          ].map(([src, title, line]) => (
+            <article key={title} className="overflow-hidden rounded-[24px] border border-white/10 bg-[#101114]">
+              <img src={src} alt="" className="aspect-video w-full object-cover" />
+              <div className="p-5">
+                <h3 className="text-xl font-semibold">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/60">{line}</p>
+              </div>
+            </article>
+          ))}
+          <a href="mailto:oxlisvoid@gmail.com?subject=Authorized%20OxlisVoid%20reseller" className="flex flex-col justify-center rounded-[24px] bg-[#d6ff4a] p-6 text-black">
+            <p className="text-xs tracking-[0.16em] uppercase opacity-60">Pack 06</p>
+            <p className="mt-2 text-3xl font-semibold leading-tight">Be an authorized reseller.</p>
+            <p className="mt-3 text-sm leading-relaxed">Email oxlisvoid@gmail.com. Sell our content and keep up to 80% of each sale.</p>
+          </a>
+        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-6">
