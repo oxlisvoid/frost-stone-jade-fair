@@ -198,20 +198,6 @@ export function OfferPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl grid-cols-2 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 px-0 sm:grid-cols-4 mx-4 mb-16" style={{ marginLeft: "auto", marginRight: "auto" }}>
-        {[
-          ["$2,456", "top fan, one page"],
-          ["$1,890", "second fan, same model"],
-          ["2,000", "followers, new account"],
-          ["33¢", "per day, first month"],
-        ].map(([n, l]) => (
-          <div key={l} className="bg-[#07080b] px-5 py-6">
-            <p className="text-3xl font-semibold tracking-tight sm:text-4xl">{n}</p>
-            <p className="mt-1 text-sm text-white/45">{l}</p>
-          </div>
-        ))}
-      </section>
-
       <section className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">No setup</p>
