@@ -80,8 +80,47 @@ function CheckoutPage() {
 
   return (
     <SiteShell>
-      <main className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_0.95fr]">
-        <div>
+      <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+        <section className="rounded-[28px] bg-[#07080b] p-5 text-[#f4f1ea] sm:p-8">
+          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">Also available · ask by email</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">Named packs. No price on this page.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">
+            These are not in the payment form. Buy the kit below if that is what you came for. Want a finished model or a service, write us after checkout and we name the next step.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["/media/ugc/shoes.jpg", "Pack 01", "Ad Face", "Fifteen short ads. One face. The product is in her hand in the first second."],
+              ["/media/ugc/serum.jpg", "Pack 02", "One Model", "One character. Stills and vertical clips. The same face in every file."],
+              ["/media/ugc/scent.jpg", "Pack 03", "Monthly Drop", "New photos and clips of that same character, every month."],
+              ["/media/ugc/coffee.jpg", "Pack 04", "One Job", "Only the step you are stuck on. The face, or the product in frame."],
+              ["/media/ref-indoor.jpg", "Pack 05", "14 Days With Us", "Two calls. We look at what you posted. Not a long course."],
+            ].map(([src, code, name, line]) => (
+              <article key={code} className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                <img src={src} alt="" className="aspect-[3/4] w-full object-cover" />
+                <div className="p-4">
+                  <p className="text-[11px] tracking-[0.16em] text-[#d6ff4a] uppercase">{code}</p>
+                  <h3 className="mt-1 text-lg font-semibold">{name}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-white/60">{line}</p>
+                </div>
+              </article>
+            ))}
+            <a
+              href="mailto:oxlisvoid@gmail.com?subject=OxlisVoid%20reseller"
+              className="flex flex-col justify-between rounded-2xl bg-[#d6ff4a] p-5 text-black"
+            >
+              <div>
+                <p className="text-[11px] tracking-[0.16em] uppercase opacity-60">Reseller</p>
+                <h3 className="mt-2 text-2xl font-semibold leading-tight">Sell it. Don’t build it.</h3>
+                <p className="mt-3 text-sm leading-relaxed">
+                  Be an OxlisVoid reseller. You don’t make the model. You don’t shoot the files. You sell the pack. We deliver it.
+                </p>
+              </div>
+              <p className="mt-6 text-sm font-semibold">Write oxlisvoid@gmail.com →</p>
+            </a>
+          </div>
+        </section>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_0.95fr]">
           <p className="text-sm font-medium text-accent">Stripe Checkout</p>
           <h1 className="mt-2 text-4xl tracking-tight">Pick the tools. Pay on Stripe.</h1>
           <p className="mt-3 text-muted">
@@ -183,6 +222,7 @@ function CheckoutPage() {
             Stripe processes the payment. We never store your card number, expiry, or security code.
           </p>
         </form>
+        </div>
       </main>
     </SiteShell>
   );
