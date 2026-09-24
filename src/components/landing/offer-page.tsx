@@ -149,7 +149,7 @@ const FAQ = [
   ["Can I post her on TikTok and Instagram?", "Yes. That is the distribution half of the system. Same character, native posts, a cadence, and a link."],
   ["Do I have to design the character from zero?", "No. You can lock a finished look on day one, or build your own. Either way the face stays consistent."],
   ["Is this a subscription?", "No. $9.99 once. Updates stay included."],
-  ["Do I show my face?", "No. The character is on camera. You are not."],
+  ["Do I need a PC or a GPU?", "No. Start from your phone. The render runs in the cloud. A graphics card is not part of this."],
   ["Why are people quitting credit tools?", "A buyer wrote that the model was working and the credits were already gone. This pack is a one-time file, not a meter."],
   ["When do files arrive?", "Within 24 hours of payment. Check spam for oxlisvoid1@gmail.com."],
 ];
@@ -178,7 +178,7 @@ export function OfferPage() {
             Post a character.<br />Get paid for it.<br />Stay off camera.
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/65">
-            OxlisVoid is the file we use to lock one AI character, put her on social, and open a page fans can pay. Not a credit subscription. Not your face.
+            OxlisVoid is the file we use to lock one AI character, put her on social, and open a page fans can pay. You run it from your phone. No PC. No GPU. Not your face.
           </p>
           <div className="mt-8 flex flex-wrap items-end gap-6">
             <div>
@@ -212,13 +212,49 @@ export function OfferPage() {
         ))}
       </section>
 
+      <section className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <div>
+          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">No setup</p>
+          <h2 className="mt-3 text-4xl leading-none font-semibold tracking-tight sm:text-6xl">Start from your phone.</h2>
+          <p className="mt-4 max-w-xl text-lg text-white/65">You do not need a PC with a GPU. The heavy render happens in the cloud. Your phone is enough to follow the steps, generate, post on TikTok or Instagram, and answer fans.</p>
+        </div>
+        <ul className="grid gap-2 text-sm">
+          {[
+            ["Phone", "Watch the lessons and post from the same device."],
+            ["No graphics card", "Nothing to install. No desktop required."],
+            ["Cloud render", "The generator does the work. You keep the character."],
+            ["Same day", "First posts do not wait on a new computer."],
+          ].map(([t, d]) => (
+            <li key={t} className="rounded-2xl border border-white/10 px-4 py-3">
+              <p className="font-medium">{t}</p>
+              <p className="mt-1 text-white/50">{d}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section id="proof" className="mx-auto max-w-6xl px-4 py-8">
         <div className="max-w-2xl">
           <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">Why people pay</p>
           <h2 className="mt-3 text-4xl leading-none font-semibold tracking-tight sm:text-6xl">The receipt is a fan, not a like.</h2>
           <p className="mt-4 text-white/60">
-            These are screens buyers sent. A follower is not the business. A person who subscribes, tips, and buys posts is the business. Results vary. This is not a promise of your number.
+            These are the actual screens buyers sent. Not a redraw. A follower is not the business. A person who subscribes, tips, and buys posts is the business. Results vary. This is not a promise of your number.
           </p>
+        </div>
+        <div className="mt-8 columns-1 gap-3 sm:columns-2 lg:columns-3">
+          {[
+            ["/media/proof/fan-2456.webp", "Fan spent $2,456.27"],
+            ["/media/proof/fan-1890.webp", "Fan spent $1,890.58"],
+            ["/media/proof/earnings.webp", "New account, $130.84 this month"],
+            ["/media/proof/reels.webp", "Reels going up"],
+            ["/media/proof/andres.webp", "Andrés, day one"],
+            ["/media/proof/week.webp", "Week one"],
+            ["/media/proof/email.webp", "Started again, new character"],
+          ].map(([src, alt]) => (
+            <figure key={src} className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-white/10 bg-white">
+              <img src={src} alt={alt} className="w-full" />
+            </figure>
+          ))}
         </div>
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
           <Whale
