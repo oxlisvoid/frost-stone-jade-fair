@@ -32,7 +32,7 @@ const FAQ = [
   ["Do I need experience?", "No. If you can use a phone, you can follow the steps."],
   ["Do I need a computer?", "No. You do not buy a PC or a GPU. The heavy part runs in the cloud."],
   ["What arrives after I pay?", "The whole kit, by email, in under 8 hours. One payment. It does not expire."],
-  ["What if I do not like it?", `Email ${MAIL} within 30 days with your Stripe receipt. You get the ${PRICE} back.`],
+  ["What if I do not make $500?", `Follow the steps. If you do not make $500 in the first week, email ${MAIL} with your Stripe receipt. We give the ${PRICE} back.`],
 ];
 
 function Buy({ label, full = false, dark = false }: { label: string; full?: boolean; dark?: boolean }) {
@@ -74,6 +74,9 @@ export function OfferPage() {
         <div className="mx-auto mt-5 max-w-md">
           <Buy label={`Get access now for just ${PRICE}`} full />
         </div>
+        <p className="mx-auto mt-3 max-w-md text-sm text-white/70">
+          Service guarantee. Follow the steps. If you do not make $500 in the first week, we give your money back.
+        </p>
 
         <div className="mx-auto mt-8 w-full max-w-[420px] overflow-hidden rounded-[28px] border border-white/10 bg-black">
           {playing ? (
@@ -149,7 +152,7 @@ export function OfferPage() {
           <div className="mt-6">
             <Buy label={`Get access now · ${PRICE}`} full dark />
           </div>
-          <p className="mt-3 text-sm text-black/60">30 days to ask for the money back. Email {MAIL}.</p>
+          <p className="mt-3 text-sm text-black/70">Follow the steps. If you do not make $500 in the first week, email {MAIL}. We give your money back.</p>
         </div>
       </section>
 
