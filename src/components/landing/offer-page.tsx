@@ -148,9 +148,6 @@ export function OfferPage() {
         <p className="mt-3 text-sm text-white/45">
           <span className="line-through">$97</span> · one-time payment, no subscription
         </p>
-        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-white/40">
-          Paid on Stripe. We never store your card. Files by email in under 8 hours.
-        </p>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-6">
