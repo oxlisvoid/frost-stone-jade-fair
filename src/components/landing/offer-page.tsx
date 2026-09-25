@@ -118,7 +118,7 @@ export function OfferPage() {
 
       <section className="mx-auto max-w-3xl px-4 pt-10 pb-6 text-center">
         <p className="mx-auto inline-flex rounded-full border border-[#d6ff4a]/40 bg-[#d6ff4a]/10 px-4 py-2 text-sm font-medium text-[#d6ff4a]">
-          Limited-time price. Promotion valid until September 30.
+          Unlimited-time price. Promotion valid until September 30.
         </p>
         <h1 className="mt-6 text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
           Learn how to make your first $1,000 with AI videos, even if you have zero experience.
