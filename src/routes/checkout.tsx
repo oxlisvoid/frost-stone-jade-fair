@@ -6,7 +6,6 @@ import { SEED_PRODUCTS, type CatalogProduct } from "@/lib/catalog";
 import { loadCatalog } from "@/lib/catalog-fns";
 import { createCheckoutSession } from "@/lib/checkout-fn";
 import { formatUsd } from "@/lib/content";
-import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
@@ -26,11 +25,18 @@ function CheckoutPage() {
       .then((rows) => {
         const live = rows.length ? rows : SEED_PRODUCTS;
         setCatalog(live);
-        setPicked({});
+        const kit = live.find((product) => product.unitAmountCents === 999);
+        const main = kit ?? live.find((product) => !product.addon) ?? live[0];
+        setPicked(main ? { [main.id]: true } : {});
       })
       .catch(() => undefined);
   }, []);
 
+  const ordered = useMemo(() => {
+    const kits = catalog.filter((product) => product.unitAmountCents === 999);
+    const rest = catalog.filter((product) => product.unitAmountCents !== 999);
+    return [...kits, ...rest];
+  }, [catalog]);
   const selected = useMemo(
     () => catalog.filter((product) => picked[product.id]),
     [catalog, picked],
@@ -83,11 +89,16 @@ function CheckoutPage() {
       <main className="mx-auto max-w-xl px-4 py-8 sm:px-6">
         <p className="text-sm font-medium text-accent">Pay on Stripe</p>
         <h1 className="mt-2 text-4xl tracking-tight">The price is here. Pay once.</h1>
-        <p className="mt-2 text-sm text-muted">Pick a product. The card stays on Stripe. We never store the number.</p>
+        <p className="mt-2 text-sm text-muted">The card stays on Stripe. We never store the number.</p>
         <form onSubmit={pay} className="mt-6 space-y-4 rounded-3xl bg-surface p-6 shadow-(--shadow-card)">
-          <p className="text-sm text-muted">Products</p>
+          <p className="font-display text-5xl">{formatUsd(totalCents || 0)}</p>
+          <p className="text-sm text-muted">
+            {totalCents === 999
+              ? "Same $9.99 from the page. One payment."
+              : "One payment. Pick a different product below if you want."}
+          </p>
           <ul className="space-y-2">
-            {catalog.map((product) => {
+            {ordered.map((product) => {
               const on = Boolean(picked[product.id]);
               return (
                 <li key={product.id}>
@@ -112,8 +123,6 @@ function CheckoutPage() {
               );
             })}
           </ul>
-
-          <p className="font-display text-4xl">{formatUsd(totalCents || 0)}</p>
 
           <label className="block text-sm">
             <span className="mb-1.5 block text-muted">Name</span>
@@ -165,39 +174,12 @@ function CheckoutPage() {
           {error ? <p className="rounded-lg bg-chip px-3 py-2 text-sm text-accent">{error}</p> : null}
 
           <Button type="submit" className="w-full" size="lg" disabled={busy || !accepted || !selected.length}>
-            {busy ? "Sending you to Stripe…" : `Pay with Stripe · ${SITE.currency}`}
+            {busy ? "Sending you to Stripe…" : `Pay ${formatUsd(totalCents || 0)}`}
           </Button>
           <p className="text-center text-xs text-muted">
             Stripe processes the payment. We never store your card number, expiry, or security code.
           </p>
         </form>
-
-        <section className="mt-8 space-y-4">
-          <h2 className="text-lg font-semibold">What you can add</h2>
-          {[
-            ["/media/packs/tools.jpg", "Pack 01 · Tools", "Everything to build your own model: the tools, the prompts, and a short manual that shows you how to use them."],
-            ["/media/packs/niches.jpg", "Pack 02 · Your model", "We build the model for the job you pick. Influencer. Product seller. Comedian."],
-            ["/media/packs/month.jpg", "Pack 03 · Monthly posts", "New posts every month for the niche you choose, ready for your social accounts."],
-            ["/media/packs/reseller.jpg", "Pack 04 · Your store", "We make your site and the tools to sell. Daily sales checklist, ad creatives, help setting up your Meta ads, and a course in your name and your company name."],
-            ["/media/packs/mentor.jpg", "Pack 05 · 14 days", "All the content, two models, a website, and the tools to sell or to build your model. Plus a call with one of us, so you can ask and learn the steps."],
-          ].map(([src, title, line]) => (
-            <article key={title} className="overflow-hidden rounded-2xl bg-surface shadow-(--shadow-card)">
-              <img src={src} alt="" className="aspect-video w-full object-cover" />
-              <div className="p-4">
-                <h3 className="font-semibold">{title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-muted">{line}</p>
-              </div>
-            </article>
-          ))}
-          <a
-            href="mailto:oxlisvoid@gmail.com?subject=Authorized%20OxlisVoid%20reseller"
-            className="block rounded-2xl bg-[#07080b] px-4 py-5 text-[#f4f1ea]"
-          >
-            <p className="text-xs tracking-[0.16em] text-[#d6ff4a] uppercase">Pack 06</p>
-            <p className="mt-1 text-xl font-semibold">Be an authorized reseller</p>
-            <p className="mt-2 text-sm leading-relaxed text-white/70">Email oxlisvoid@gmail.com. Sell our content and keep up to 80% of each sale.</p>
-          </a>
-        </section>
       </main>
     </SiteShell>
   );
