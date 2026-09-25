@@ -116,15 +116,11 @@ export function OfferPage() {
         </div>
       </header>
 
-      <section className="mx-auto max-w-3xl px-4 pt-8 pb-6 text-center">
-        <p className="mx-auto inline-flex rounded-full border border-[#d6ff4a]/40 bg-[#d6ff4a]/10 px-4 py-2 text-sm font-medium text-[#d6ff4a]">
-          This $9.99 lifetime price is up for a short time. The kit does not expire.
-        </p>
-        <h1 className="mt-6 text-[40px] leading-[0.95] font-semibold tracking-[-0.04em] sm:text-6xl">
-          The step-by-step system to launch an AI model from your phone.
-        </h1>
-        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/65">
-          She shows the product. You stay off camera. Create the character, post it, and ask for sponsors. No PC. No GPU.
+      <section className="mx-auto max-w-3xl px-4 pt-10 pb-6 text-center">
+        <p className="text-sm font-medium tracking-[0.22em] text-[#d6ff4a] uppercase">The number</p>
+        <h1 className="mt-4 text-6xl font-semibold tracking-[-0.05em] sm:text-8xl">$300 a day.</h1>
+        <p className="mx-auto mt-4 max-w-md text-lg text-white/70">
+          Easy to start. Not a promise you will make it.
         </p>
         <div className="mx-auto mt-8 w-full max-w-[420px] overflow-hidden rounded-[28px] border border-white/10 bg-black">
           {playing ? (
