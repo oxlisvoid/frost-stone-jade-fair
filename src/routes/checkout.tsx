@@ -24,7 +24,7 @@ function CheckoutPage() {
     void loadCatalog()
       .then((rows) => {
         const live = (rows.length ? rows : SEED_PRODUCTS).filter(
-          (product) => product.id !== "all-access" && !/all access/i.test(product.name) && product.unitAmountCents !== 5990,
+          (product) => product.id !== "all-access" && !/all access/i.test(product.name),
         );
         setCatalog(live);
         const kit = live.find((product) => product.unitAmountCents === 999);

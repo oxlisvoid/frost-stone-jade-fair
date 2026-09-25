@@ -75,7 +75,7 @@ async function readProducts(): Promise<CatalogProduct[]> {
 export const loadCatalog = createServerFn({ method: "GET" }).handler(async () => {
   const products = await readProducts();
   return products.filter(
-    (p) => p.active && p.id !== "all-access" && !/all access/i.test(p.name) && p.unitAmountCents !== 5990,
+    (p) => p.active && p.id !== "all-access" && !/all access/i.test(p.name),
   );
 });
 
