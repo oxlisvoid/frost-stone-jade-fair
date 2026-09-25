@@ -470,9 +470,6 @@ export function OfferPage() {
 
       <footer className="mx-auto max-w-6xl px-4 pt-4 pb-28 text-xs leading-relaxed text-white/40">
         <p>
-          OxlisVoid is a digital product. The screens on this page are examples from buyers. They are not a guarantee of income and they are not a typical result. Individual results vary. We do not promise a specific amount of money.
-        </p>
-        <p className="mt-3">
           Not affiliated with TikTok, Instagram, Meta, or any other platform named here.
         </p>
         <p className="mt-3">
