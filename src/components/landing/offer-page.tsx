@@ -117,12 +117,12 @@ export function OfferPage() {
       </header>
 
       <section className="mx-auto max-w-3xl px-4 pt-10 pb-6 text-center">
-        <p className="text-sm font-medium tracking-[0.22em] text-[#d6ff4a] uppercase">Possible. Not a promise.</p>
-        <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">Start earning up to $300 a day.</h1>
-        <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-white/75">
-          That is what we make today. Your number can be lower.
+        <h1 className="text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
+          The exact step-by-step system we use to take our AI models from 0 to 5 figures in 21 days or less.
+        </h1>
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/75">
+          We're not promising you anything. We show you, click by click, exactly what we've already done and what we keep doing.
         </p>
-        <p className="mx-auto mt-3 max-w-md text-lg text-white">Automatic. You do not have to be a computer nerd.</p>
         <div className="mx-auto mt-8 w-full max-w-[420px] overflow-hidden rounded-[28px] border border-white/10 bg-black">
           {playing ? (
             <video
