@@ -420,12 +420,7 @@ export function OfferPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="max-w-2xl">
-          <p className="text-xs tracking-[0.22em] text-[#d6ff4a] uppercase">From buyers</p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight">Screens people sent. Not a promise.</h2>
-          <p className="mt-3 text-white/55">These are messages and pages from people using the method. They are examples. They are not a typical result, and they are not your result.</p>
-        </div>
-        <div className="mt-8 columns-1 gap-3 sm:columns-2 lg:columns-3">
+        <div className="columns-1 gap-3 sm:columns-2 lg:columns-3">
           {SHOTS.map(([src, alt]) => (
             <figure key={src} className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-white/10 bg-white">
               <img src={src} alt={alt} className="w-full" />
