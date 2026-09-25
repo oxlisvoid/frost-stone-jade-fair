@@ -415,7 +415,6 @@ export function OfferPage() {
           <p className="mt-4 text-sm leading-relaxed text-white/60">
             Access is lifetime. The 30 days are only if you want the money back. Email {MAIL} with your Stripe receipt. We refund the order.
           </p>
-          <p className="mt-4 text-sm text-white/45">Please actually try it. Income is not guaranteed. Results depend on what you post and how often.</p>
         </div>
       </section>
 
