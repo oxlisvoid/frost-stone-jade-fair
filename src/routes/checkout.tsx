@@ -17,13 +17,15 @@ function CheckoutPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [accepted, setAccepted] = useState(false);
-  const [catalog, setCatalog] = useState<CatalogProduct[]>(SEED_PRODUCTS);
+  const [catalog, setCatalog] = useState<CatalogProduct[]>([]);
   const [picked, setPicked] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     void loadCatalog()
       .then((rows) => {
-        const live = rows.length ? rows : SEED_PRODUCTS;
+        const live = (rows.length ? rows : SEED_PRODUCTS).filter(
+          (product) => product.id !== "all-access" && !/all access/i.test(product.name) && product.unitAmountCents !== 5990,
+        );
         setCatalog(live);
         const kit = live.find((product) => product.unitAmountCents === 999);
         const main = kit ?? live.find((product) => !product.addon) ?? live[0];

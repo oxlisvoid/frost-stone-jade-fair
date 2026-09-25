@@ -63,14 +63,7 @@ async function readProducts(): Promise<CatalogProduct[]> {
   try {
     const { listStripeCatalog } = await import("./stripe-catalog.server");
     const fromStripe = await listStripeCatalog(true);
-    if (fromStripe.length) {
-      const hasAllAccess = fromStripe.some(
-        (p) => p.id === "all-access" || /all access/i.test(p.name),
-      );
-      return hasAllAccess
-        ? fromStripe
-        : [...SEED_PRODUCTS.filter((p) => p.id === "all-access"), ...fromStripe];
-    }
+    if (fromStripe.length) return fromStripe;
   } catch {
     /* Stripe key missing or API error */
   }
@@ -81,7 +74,9 @@ async function readProducts(): Promise<CatalogProduct[]> {
 
 export const loadCatalog = createServerFn({ method: "GET" }).handler(async () => {
   const products = await readProducts();
-  return products.filter((p) => p.active);
+  return products.filter(
+    (p) => p.active && p.id !== "all-access" && !/all access/i.test(p.name) && p.unitAmountCents !== 5990,
+  );
 });
 
 export const loadAllCatalog = createServerFn({ method: "GET" }).handler(async () => {
