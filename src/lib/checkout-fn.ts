@@ -11,7 +11,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .validator(
     z.object({
       items: z.array(itemSchema).min(1).max(10),
-      email: z.string().email().max(200).optional(),
+      email: z.string().email().max(200),
       name: z.string().max(120).optional(),
       origin: z.string().url().optional(),
     }),
