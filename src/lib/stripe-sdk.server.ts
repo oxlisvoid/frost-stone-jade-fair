@@ -206,6 +206,7 @@ export async function createStripeCheckout(input: {
   const stripe = await getStripe();
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
+    locale: "en",
     line_items,
     ...(email ? { customer_email: email } : {}),
     billing_address_collection: "auto",
