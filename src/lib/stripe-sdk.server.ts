@@ -192,7 +192,7 @@ export async function createStripeCheckout(input: {
 }) {
   if (!input.items.length) throw new Error("Select at least one product");
   const email = input.email?.trim().toLowerCase() ?? "";
-  if (!email || !email.includes("@")) {
+  if (email && !email.includes("@")) {
     throw new Error("Enter the email where you want the toolkit sent.");
   }
 
@@ -207,12 +207,12 @@ export async function createStripeCheckout(input: {
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
     line_items,
-    customer_email: email,
+    ...(email ? { customer_email: email } : {}),
     billing_address_collection: "auto",
     metadata: {
       name: input.name ?? "",
       products: input.items.map((i) => i.productId).join(","),
-      deliver_to: email,
+      ...(email ? { deliver_to: email } : {}),
     },
     custom_text: {
       submit: {
